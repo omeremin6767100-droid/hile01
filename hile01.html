@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Hile01 - Pro Panel</title>
+    <style>
+        body { 
+            background-color: #050505; 
+            color: #00ff00; 
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding: 20px;
+        }
+        .panel {
+            border: 3px solid #00ff00;
+            padding: 20px;
+            display: inline-block;
+            background: #000;
+            box-shadow: 0 0 30px #00ff00;
+            border-radius: 20px;
+        }
+        h1 { font-size: 45px; letter-spacing: 5px; margin-bottom: 10px; }
+        iframe { 
+            border: 2px solid #00ff00; 
+            border-radius: 10px; 
+            background: #fff; /* Oyunun beyaz arka planı için */
+            margin-top: 20px;
+        }
+        .status { color: #ff0000; font-weight: bold; margin-top: 10px; }
+        .btn {
+            background: #00ff00; color: #000; border: none;
+            padding: 10px 20px; font-weight: bold; cursor: pointer;
+            border-radius: 5px; margin: 10px;
+        }
+        .btn:hover { background: #fff; }
+    </style>
+</head>
+<body>
+
+    <div class="panel">
+        <h1>HILE01.V1</h1>
+        <div class="status">SİSTEM DURUMU: ERİŞİM ONAYLANDI</div>
+        
+        <p>Aşağıdaki ekrandan oyunu başlatabilirsin:</p>
+        
+        <iframe src="https://chromedino.com/" width="600" height="200"></iframe>
+        
+        <br>
+        <p>Hile Komutları İçin <b>F12</b> Tuşuna Bas ve Konsolu Aç!</p>
+        
+        <button class="btn" onclick="alert('Ölümsüzlük: Runner.prototype.gameOver = function (){}')">Ölümsüzlük Kodunu Gör</button>
+        <button class="btn" onclick="alert('Hız: Runner.instance_.setSpeed(100)')">Hız Kodunu Gör</button>
+    </div>
+
+    <script>
+        console.log("Hile01 Sisteme Sızdı...");
+    </script>
+
+</body>
+</html>
