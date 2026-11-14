@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alperen Ultimate Arduino & Bike Open-World OS</title>
+    <title>ALPEREN ULTIMATE CYBER OS v9.5 - Pro Edition</title>
     <style>
+        /* ==========================================================================
+           ALPEREN ULTIMATE CYBER OS - MASTER STYLESHEET
+           ========================================================================== */
+        :root {
+            --primary: #00ffcc;
+            --secondary: #ff007f;
+            --accent: #ffff00;
+            --bg-dark: #030308;
+            --bg-panel: rgba(10, 10, 25, 0.85);
+            --border-glow: 0 0 15px rgba(0, 255, 204, 0.4);
+            --font-main: 'Courier New', Courier, monospace;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,161 +25,487 @@
             user-select: none;
             cursor: none !important;
         }
+
         body {
-            background-color: #05050a;
-            color: #00ffcc;
-            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-dark);
+            color: var(--primary);
+            font-family: var(--font-main);
             overflow: hidden;
-            height: 100vh;
             width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        /* Özel Havalı Mouse */
-        #custom-cursor {
+
+        /* --- CUSTOM ADVANCED CURSOR SYSTEM --- */
+        #alperen-cursor {
             position: fixed;
             top: 0;
             left: 0;
-            width: 24px;
-            height: 24px;
-            border: 2px solid #00ffcc;
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--primary);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
-            transition: width 0.15s, height 0.15s, background-color 0.15s;
-            z-index: 9999;
-            box-shadow: 0 0 15px #00ffcc, inset 0 0 5px #00ffcc;
+            transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+            z-index: 99999;
+            box-shadow: 0 0 20px var(--primary), inset 0 0 8px var(--primary);
         }
-        #custom-cursor-dot {
+
+        #alperen-cursor-dot {
             position: fixed;
             top: 0;
             left: 0;
             width: 6px;
             height: 6px;
-            background-color: #ff007f;
+            background-color: var(--secondary);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
-            z-index: 10000;
-            box-shadow: 0 0 10px #ff007f;
-        }
-        .trail {
-            position: fixed;
-            pointer-events: none;
-            width: 10px;
-            height: 10px;
-            background: rgba(0, 255, 204, 0.5);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9998;
-            animation: fadeOut 0.5s forwards;
-        }
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.2);
-            }
+            z-index: 100000;
+            box-shadow: 0 0 12px var(--secondary);
         }
 
-        /* Arayüz Panelleri */
-        #game-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
+        .cursor-trail {
+            position: fixed;
+            pointer-events: none;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, rgba(0,255,204,0.8) 0%, rgba(255,0,127,0.2) 100%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 99998;
+            animation: cursorFade 0.6s forwards;
+        }
+
+        @keyframes cursorFade {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.1); }
+        }
+
+        /* --- TOP SYSTEM BAR --- */
+        header {
+            height: 45px;
+            background: rgba(5, 5, 15, 0.95);
+            border-bottom: 2px solid var(--primary);
             display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 5px 25px rgba(0, 255, 204, 0.15);
+            z-index: 100;
         }
-        canvas {
-            background: linear-gradient(135deg, #0b0b16 0%, #121224 100%);
-            display: block;
-            flex-grow: 1;
+
+        .logo-area {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--secondary);
+            text-shadow: 0 0 10px var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .sidebar {
-            width: 320px;
-            background: rgba(10, 10, 25, 0.9);
-            border-left: 2px solid #00ffcc;
-            padding: 20px;
+
+        .system-status {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+        }
+
+        .status-pill {
+            background: rgba(0, 255, 204, 0.1);
+            border: 1px solid var(--primary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            box-shadow: inset 0 0 5px rgba(0, 255, 204, 0.2);
+        }
+
+        /* --- MAIN DESKTOP / WORKSPACE --- */
+        .workspace {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 320px 1fr 350px;
+            grid-template-rows: 1fr 200px;
+            gap: 15px;
+            padding: 15px;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #0a0a1a 0%, #020205 100%);
+        }
+
+        /* --- COMMON PANEL STYLING --- */
+        .panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: var(--border-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .panel-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--secondary);
+            text-shadow: 0 0 8px var(--secondary);
+            border-bottom: 1px dashed rgba(0, 255, 204, 0.3);
+            padding-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* --- LEFT COLUMN: CONTROLS & HARDWARE --- */
+        .left-col {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
             display: flex;
             flex-direction: column;
             gap: 15px;
-            box-shadow: -5px 0 25px rgba(0, 255, 204, 0.2);
-            z-index: 10;
         }
-        h1 {
-            font-size: 20px;
-            color: #ff007f;
-            text-shadow: 0 0 10px #ff007f;
-            border-bottom: 1px dashed #00ffcc;
-            padding-bottom: 8px;
-        }
-        .panel-box {
-            background: rgba(0, 255, 204, 0.05);
-            border: 1px solid #00ffcc;
-            padding: 12px;
-            border-radius: 6px;
-            box-shadow: inset 0 0 10px rgba(0, 255, 204, 0.1);
-        }
+
         .btn {
             background: transparent;
-            border: 1px solid #ff007f;
-            color: #ff007f;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
             padding: 10px;
             font-family: inherit;
             font-weight: bold;
-            border-radius: 4px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-shadow: 0 0 5px var(--secondary);
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            color: var(--bg-dark);
+            box-shadow: 0 0 25px var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+            text-shadow: 0 0 5px var(--primary);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary);
+            color: var(--bg-dark);
+            box-shadow: 0 0 25px var(--primary);
+        }
+
+        /* --- CENTER COLUMN: GAME & VISUALIZER CANVAS --- */
+        .center-col {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            padding: 0;
+            background: #000;
+            position: relative;
+        }
+
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .canvas-overlay-hud {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--primary);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 13px;
+            pointer-events: none;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+        }
+
+        /* --- BOTTOM COLUMN: TERMINAL EMULATOR --- */
+        .bottom-col {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            background: rgba(2, 2, 8, 0.95);
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .terminal-output {
+            flex: 1;
+            overflow-y: auto;
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-right: 5px;
+        }
+
+        .terminal-output::-webkit-scrollbar {
+            width: 6px;
+        }
+        .terminal-output::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            border-top: 1px solid rgba(0, 255, 204, 0.2);
+            padding-top: 8px;
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            cursor: none !important;
+        }
+
+        /* --- RIGHT COLUMN: STATS & ARDUINO TELEMETRY --- */
+        .right-col {
+            grid-column: 3 / 4;
+            grid-row: 1 / 3;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .telemetry-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            padding: 6px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .highlight {
+            color: var(--accent);
+            text-shadow: 0 0 6px var(--accent);
+            font-weight: bold;
+        }
+
+        /* Tab System */
+        .tab-buttons {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: rgba(0, 255, 204, 0.05);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 6px;
+            font-size: 11px;
+            text-align: center;
+            border-radius: 3px;
             cursor: pointer;
             transition: 0.2s;
-            text-shadow: 0 0 5px #ff007f;
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
-            width: 100%;
-            margin-top: 5px;
         }
-        .btn:hover {
-            background: #ff007f;
-            color: #05050a;
-            box-shadow: 0 0 20px #ff007f;
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            color: var(--bg-dark);
         }
-        .stats {
-            font-size: 14px;
-            line-height: 1.6;
+
+        .tab-content {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
         }
-        .highlight {
-            color: #ffff00;
-            text-shadow: 0 0 5px #ffff00;
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* Matrix Rain / Background FX Layer */
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.04;
+        }
+
+        /* UI Wrapper to keep things above matrix */
+        header, .workspace, #alperen-cursor, #alperen-cursor-dot {
+            z-index: 10;
         }
     </style>
 </head>
 <body>
 
-    <div id="custom-cursor"></div>
-    <div id="custom-cursor-dot"></div>
+    <canvas id="matrix-bg"></canvas>
 
-    <div id="game-container">
-        <canvas id="gameCanvas"></canvas>
-        <div class="sidebar">
-            <h1>ALPEREN ULTIMATE OS</h1>
-            <div class="panel-box stats">
-                <p>Sistem: <span class="highlight">PC / 6-TEL / ARDUINO</span></p>
-                <p>Mod: <span class="highlight">BİSİKLET & AÇIK DÜNYA</span></p>
-                <p>Skor: <span id="score" class="highlight">0</span></p>
-                <p>Beyaz Tabak: <span id="plates" class="highlight">0</span></p>
-                <p>Arduino DSL: <span id="arduino-status" class="highlight">BAĞLANDI</span></p>
-            </div>
-            <div class="panel-box">
-                <p style="font-size: 12px; margin-bottom: 8px;">KONTROLLER:</p>
-                <p style="font-size: 12px;">W/A/S/D veya YÖN TUŞLARI: Bisiklet Sürme</p>
-                <p style="font-size: 12px;">BOŞLUK (SPACE): Turbo Zıplama</p>
-            </div>
-            <button class="btn" onclick="boostSpeed()">ARDUINO NITRO BOOST</button>
-            <button class="btn" onclick="spawnPlate()">BEYAZ TABAK ÜRET</button>
-            <button class="btn" onclick="resetGame()">SİSTEMİ YENİDEN BAŞLAT</button>
+    <!-- Custom Cursor Elements -->
+    <div id="alperen-cursor"></div>
+    <div id="alperen-cursor-dot"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-area">
+            <span>⚡</span> ALPEREN ULTIMATE OS v9.5
         </div>
+        <div class="system-status">
+            <div class="status-pill">SİSTEM: <span class="highlight">AKTİF</span></div>
+            <div class="status-pill">ARDUINO DSL: <span class="highlight">BAĞLANDI</span></div>
+            <div class="status-pill">PULSE: <span id="clock-display" class="highlight">00:00:00</span></div>
+        </div>
+    </header>
+
+    <!-- Workspace Grid -->
+    <div class="workspace">
+
+        <!-- LEFT COLUMN: CONTROLS, BICYCLE & PLATE SIMULATOR -->
+        <div class="left-col">
+            <div class="panel">
+                <div class="panel-title"><span>🚲 BİSİKLET & AÇIK DÜNYA KONTROLÜ</span></div>
+                <div style="font-size: 12px; line-height: 1.5;">
+                    Alperen'in 26-jant Salcano bisikleti ve açık dünya simülasyonu aktif. Zıplama, nitro boost ve akrobatik sürüş kontrol paneli.
+                </div>
+                <button class="btn btn-primary" onclick="triggerBikeBoost()">⚡ NITRO BOOST AÇ</button>
+                <button class="btn" onclick="spawnWhitePlate()">🍽️ BEYAZ TABAK ÜRET</button>
+                <button class="btn" onclick="toggleWorldMode()">🌍 DÜNYA MODUNU DEĞİŞTİR</button>
+            </div>
+
+            <div class="panel" style="flex: 1;">
+                <div class="panel-title"><span>🛠️ ARDUINO & DONANIM MODLARI</span></div>
+                <div class="tab-buttons">
+                    <div class="tab-btn active" onclick="switchTab(event, 'tab-uno')">Uno R3</div>
+                    <div class="tab-btn" onclick="switchTab(event, 'tab-tft')">1.8" TFT</div>
+                    <div class="tab-btn" onclick="switchTab(event, 'tab-sensor')">HC-SR04</div>
+                </div>
+                <div id="tab-uno" class="tab-content active" style="font-size: 12px; line-height: 1.4;">
+                    <p>Mikrodenetleyici: <span class="highlight">ATmega328P</span></p>
+                    <p>Baud Rate: <span class="highlight">9600 DSL</span></p>
+                    <p>Pin Durumu: <span class="highlight">PWM Aktif</span></p>
+                    <button class="btn" onclick="sendArduinoCommand('RESET')">SİNYAL RESETLE</button>
+                </div>
+                <div id="tab-tft" class="tab-content" style="font-size: 12px; line-height: 1.4;">
+                    <p>Çözünürlük: <span class="highlight">128x160 RGB</span></p>
+                    <p>Yüz İfadesi: <span class="highlight">Mutlu Robot</span></p>
+                    <p>FPS: <span class="highlight">60 FPS Sabit</span></p>
+                    <button class="btn" onclick="sendArduinoCommand('FACE_CHANGE')">İFADE DEĞİŞTİR</button>
+                </div>
+                <div id="tab-sensor" class="tab-content" style="font-size: 12px; line-height: 1.4;">
+                    <p>Mesafe: <span id="sensor-dist" class="highlight">42</span> cm</p>
+                    <p>Ultrasonik Tepki: <span class="highlight">NORMAL</span></p>
+                    <button class="btn" onclick="triggerSensorPulse()">TEST PULSE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CENTER COLUMN: GAME & CANVAS ENGINE -->
+        <div class="panel center-col">
+            <div class="canvas-overlay-hud">
+                SKOR: <span id="game-score" class="highlight">0</span> | BEYAZ TABAK: <span id="plate-count" class="highlight">0</span> | MOD: <span class="highlight" id="mode-label">AÇIK DÜNYA</span>
+            </div>
+            <canvas id="gameCanvas"></canvas>
+        </div>
+
+        <!-- BOTTOM COLUMN: ADVANCED TERMINAL -->
+        <div class="panel bottom-col">
+            <div class="panel-title"><span>💻 ALPEREN TERMINAL SHELL v2.4</span></div>
+            <div class="terminal-output" id="terminal-output">
+                <div>[SİSTEM] Alperen Ultimate OS başarıyla yüklendi.</div>
+                <div>[SİSTEM] Tüm donanım modülleri (PC, 6-TEL, Arduino, DSL) senkronize edildi.</div>
+                <div>[İPUCU] Komut satırına 'yardim' yazarak tüm komutları görebilirsiniz.</div>
+            </div>
+            <div class="terminal-input-line">
+                <span style="color: var(--secondary);">&gt;</span>
+                <input type="text" id="terminal-input" class="terminal-input" placeholder="Komut yazın (örn: yardim, status, boost, clear)..." autofocus>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: TELEMETRY & SYSTEM MONITOR -->
+        <div class="right-col">
+            <div class="panel">
+                <div class="panel-title"><span>📊 SİSTEM TELEMETRİSİ</span></div>
+                <div class="telemetry-row">
+                    <span>CPU Yükü:</span>
+                    <span class="highlight" id="cpu-load">14.2%</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Bellek Kullanımı:</span>
+                    <span class="highlight">4.8 GB / 16 GB</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>GPU FPS Sınırı:</span>
+                    <span class="highlight">77 FPS (NVIDIA)</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Ağ Bağlantısı:</span>
+                    <span class="highlight">1 Gbps DSL</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Çalışma Süresi:</span>
+                    <span id="uptime-display" class="highlight">00:00:00</span>
+                </div>
+            </div>
+
+            <div class="panel" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                <div class="panel-title"><span>🚀 HIZLI İŞLEMLER</span></div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <button class="btn" onclick="runMatrixEffect()">MATRIX YAĞMURU</button>
+                    <button class="btn" onclick="playCyberSound()">SES SENTEZLE</button>
+                    <button class="btn" onclick="resetAllSystems()">FABRİKA AYARLARI</button>
+                </div>
+                <div style="font-size: 10px; color: rgba(0,255,204,0.5); text-align: center; margin-top: 10px;">
+                    Alperen Özel Projesi © 2026
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    <!-- JAVASCRIPT CODE ENGINE -->
     <script>
-        // Özel Havalı Mouse Takibi
-        const cursor = document.getElementById('custom-cursor');
-        const cursorDot = document.getElementById('custom-cursor-dot');
+        /* ==========================================================================
+           ALPEREN OS JAVASCRIPT ENGINE & LOGIC
+           ========================================================================== */
 
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
+        // --- CUSTOM CURSOR LOGIC ---
+        const cursor = document.getElementById('alperen-cursor');
+        const cursorDot = document.getElementById('alperen-cursor-dot');
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let cursorX = mouseX;
+        let cursorY = mouseY;
 
         window.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
@@ -174,20 +513,20 @@
             cursorDot.style.left = mouseX + 'px';
             cursorDot.style.top = mouseY + 'px';
 
-            // Trail efekti
-            if(Math.random() < 0.3) {
+            // Generate cursor particle trail
+            if (Math.random() < 0.25) {
                 const trail = document.createElement('div');
-                trail.className = 'trail';
+                trail.className = 'cursor-trail';
                 trail.style.left = mouseX + 'px';
                 trail.style.top = mouseY + 'px';
                 document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 500);
+                setTimeout(() => trail.remove(), 600);
             }
         });
 
         function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.2;
-            cursorY += (mouseY - cursorY) * 0.2;
+            cursorX += (mouseX - cursorX) * 0.25;
+            cursorY += (mouseY - cursorY) * 0.25;
             cursor.style.left = cursorX + 'px';
             cursor.style.top = cursorY + 'px';
             requestAnimationFrame(animateCursor);
@@ -195,186 +534,367 @@
         animateCursor();
 
         window.addEventListener('mousedown', () => {
-            cursor.style.width = '36px';
-            cursor.style.height = '36px';
-            cursor.style.backgroundColor = 'rgba(0, 255, 204, 0.2)';
+            cursor.style.width = '40px';
+            cursor.style.height = '40px';
+            cursor.style.backgroundColor = 'rgba(0, 255, 204, 0.15)';
         });
         window.addEventListener('mouseup', () => {
-            cursor.style.width = '24px';
-            cursor.style.height = '24px';
+            cursor.style.width = '28px';
+            cursor.style.height = '28px';
             cursor.style.backgroundColor = 'transparent';
         });
 
-        // Oyun Mantığı (Canvas)
+        // --- CLOCK & UPTIME ---
+        let startTime = Date.now();
+        function updateClocks() {
+            const now = new Date();
+            const timeString = now.toTimeString().split(' ')[0];
+            document.getElementById('clock-display').innerText = timeString;
+
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+            const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+            const secs = String(elapsed % 60).padStart(2, '0');
+            document.getElementById('uptime-display').innerText = `${hrs}:${mins}:${secs}`;
+
+            // Randomize CPU load slightly for realism
+            const randomCpu = (12 + Math.random() * 8).toFixed(1);
+            document.getElementById('cpu-load').innerText = `${randomCpu}%`;
+        }
+        setInterval(updateClocks, 1000);
+
+        // --- TAB SYSTEM ---
+        function switchTab(evt, tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(c => c.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+            printToTerminal(`[SİSTEM] Sekme değiştirildi: ${tabId}`);
+        }
+
+        // --- TERMINAL EMULATOR ---
+        const terminalOutput = document.getElementById('terminal-output');
+        const terminalInput = document.getElementById('terminal-input');
+
+        function printToTerminal(text, isError = false) {
+            const div = document.createElement('div');
+            div.style.color = isError ? '#ff007f' : 'var(--primary)';
+            div.innerText = text;
+            terminalOutput.appendChild(div);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = terminalInput.value.trim();
+                if (cmd === '') return;
+                printToTerminal(`> ${cmd}`);
+                handleCommand(cmd.toLowerCase());
+                terminalInput.value = '';
+            }
+        });
+
+        function handleCommand(cmd) {
+            switch(cmd) {
+                case 'yardim':
+                case 'help':
+                    printToTerminal('Mevcut Komutlar:');
+                    printToTerminal(' - status  : Sistem durumunu gösterir');
+                    printToTerminal(' - boost   : Bisiklet hızını artırır');
+                    printToTerminal(' - tabak   : Beyaz tabak üretir');
+                    printToTerminal(' - arduino : Arduino DSL bağlantısını test eder');
+                    printToTerminal(' - matrix  : Matrix görsel efektini tetikler');
+                    printToTerminal(' - clear   : Terminal ekranını temizler');
+                    printToTerminal(' - hakkinda: Alperen Ultimate OS hakkında bilgi verir');
+                    break;
+                case 'status':
+                    printToTerminal('[DURUM] Tüm sistemler kararlı. 6-TEL & PC & Arduino senkronize.');
+                    break;
+                case 'boost':
+                    triggerBikeBoost();
+                    printToTerminal('[BİSİKLET] Nitro Boost aktif edildi!');
+                    break;
+                case 'tabak':
+                    spawnWhitePlate();
+                    printToTerminal('[ENVANTER] Beyaz tabak koleksiyona eklendi.');
+                    break;
+                case 'arduino':
+                    printToTerminal('[ARDUINO] ATmega328P seri port yanıt verdi: OK (9600 baud)');
+                    break;
+                case 'matrix':
+                    runMatrixEffect();
+                    printToTerminal('[GÖRSEL] Matrix yağmuru güçlendirildi.');
+                    break;
+                case 'clear':
+                    terminalOutput.innerHTML = '';
+                    break;
+                case 'hakkinda':
+                case 'about':
+                    printToTerminal('Alperen Ultimate OS: Bisiklet sürüşü, açık dünya, Arduino donanım ve havalı mouse entegrasyonlu özel platform.');
+                    break;
+                default:
+                    printToTerminal(`Bilinmeyen komut: '${cmd}'. 'yardim' yazarak komut listesini görebilirsiniz.`, true);
+                    break;
+            }
+        }
+
+        // --- GAME & CANVAS ENGINE (BIKE & OPEN WORLD SIMULATOR) ---
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
         function resizeCanvas() {
-            canvas.width = window.innerWidth - 320;
-            canvas.height = window.innerHeight;
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight - 40; // HUD payı
         }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
         let score = 0;
-        let platesCount = 0;
+        let plateCount = 0;
         let speedMultiplier = 1;
+        let worldMode = 'AÇIK DÜNYA';
 
-        // Bisikletçi Karakteri
         let bike = {
             x: 100,
             y: canvas.height / 2,
-            radius: 20,
-            speed: 5,
-            angle: 0
+            radius: 18,
+            speed: 4
         };
 
-        // Toplanabilir Nesneler (Beyaz Tabak ve Arduino Parçaları)
-        let collectibles = [];
+        let entities = [];
 
-        function spawnCollectible() {
-            collectibles.push({
+        function spawnEntity() {
+            entities.push({
                 x: canvas.width + 50,
-                y: Math.random() * (canvas.height - 100) + 50,
-                type: Math.random() > 0.5 ? 'plate' : 'arduino',
-                size: 15
+                y: Math.random() * (canvas.height - 60) + 30,
+                type: Math.random() > 0.4 ? 'plate' : 'arduino_part',
+                size: 14
             });
         }
-
-        setInterval(spawnCollectible, 1500);
+        setInterval(spawnEntity, 1800);
 
         let keys = {};
         window.addEventListener('keydown', (e) => keys[e.key] = true);
         window.addEventListener('keyup', (e) => keys[e.key] = false);
 
-        function boostSpeed() {
-            speedMultiplier = 2.5;
+        function triggerBikeBoost() {
+            speedMultiplier = 2.8;
+            printToTerminal('[BİSİKLET] Nitro Boost ateşlendi!');
             setTimeout(() => speedMultiplier = 1, 3000);
         }
 
-        function spawnPlate() {
-            platesCount++;
-            document.getElementById('plates').innerText = platesCount;
+        function spawnWhitePlate() {
+            plateCount++;
+            document.getElementById('plate-count').innerText = plateCount;
+            printToTerminal('[NESNE] Beyaz tabak üretildi ve masaya yerleştirildi.');
         }
 
-        function resetGame() {
+        function toggleWorldMode() {
+            worldMode = worldMode === 'AÇIK DÜNYA' ? 'SERBEST SÜRÜŞ' : 'AÇIK DÜNYA';
+            document.getElementById('mode-label').innerText = worldMode;
+            printToTerminal(`[DÜNYA] Mod değiştirildi: ${worldMode}`);
+        }
+
+        function triggerSensorPulse() {
+            const dist = Math.floor(10 + Math.random() * 80);
+            document.getElementById('sensor-dist').innerText = dist;
+            printToTerminal(`[ARDUINO] HC-SR04 Mesafe ölçümü: ${dist} cm`);
+        }
+
+        function runMatrixEffect() {
+            printToTerminal('[SİSTEM] Matrix protokolü tetiklendi.');
+        }
+
+        function playCyberSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.2);
+                printToTerminal('[SES] Web Audio sentezleyici tetiklendi.');
+            } catch(e) {
+                printToTerminal('[SES] Ses bağlamı başlatılamadı.', true);
+            }
+        }
+
+        function resetAllSystems() {
             score = 0;
-            platesCount = 0;
-            collectibles = [];
-            bike.y = canvas.height / 2;
-            document.getElementById('score').innerText = score;
-            document.getElementById('plates').innerText = platesCount;
+            plateCount = 0;
+            entities = [];
+            document.getElementById('game-score').innerText = score;
+            document.getElementById('plate-count').innerText = plateCount;
+            printToTerminal('[SİSTEM] Fabrika ayarlarına dönüldü.');
         }
 
-        // Oyun Döngüsü
-        function update() {
-            // Hareket
-            if ((keys['ArrowUp'] || keys['w'] || keys['W']) && bike.y > 30) bike.y -= bike.speed * speedMultiplier;
-            if ((keys['ArrowDown'] || keys['s'] || keys['S']) && bike.y < canvas.height - 30) bike.y += bike.speed * speedMultiplier;
-            if ((keys['ArrowLeft'] || keys['a'] || keys['A']) && bike.x > 50) bike.x -= bike.speed;
+        // Main Update Loop
+        function updateGame() {
+            if (canvas.width <= 0 || canvas.height <= 0) return;
+
+            // Handle Bike Movement
+            if ((keys['ArrowUp'] || keys['w'] || keys['W']) && bike.y > 25) bike.y -= bike.speed * speedMultiplier;
+            if ((keys['ArrowDown'] || keys['s'] || keys['S']) && bike.y < canvas.height - 25) bike.y += bike.speed * speedMultiplier;
+            if ((keys['ArrowLeft'] || keys['a'] || keys['A']) && bike.x > 30) bike.x -= bike.speed;
             if ((keys['ArrowRight'] || keys['d'] || keys['D']) && bike.x < canvas.width / 2) bike.x += bike.speed;
 
-            // Koleksiyon nesneleri güncelleme
-            for (let i = collectibles.length - 1; i >= 0; i--) {
-                collectibles[i].x -= 4 * speedMultiplier;
+            // Update Entities
+            for (let i = entities.length - 1; i >= 0; i--) {
+                entities[i].x -= 3.5 * speedMultiplier;
 
-                // Çarpışma kontrolü
-                let dx = bike.x - collectibles[i].x;
-                let dy = bike.y - collectibles[i].y;
+                // Collision Detection
+                let dx = bike.x - entities[i].x;
+                let dy = bike.y - entities[i].y;
                 let dist = Math.sqrt(dx * dx + dy * dy);
 
-                if (dist < bike.radius + collectibles[i].size) {
-                    if (collectibles[i].type === 'plate') {
-                        platesCount++;
-                        document.getElementById('plates').innerText = platesCount;
+                if (dist < bike.radius + entities[i].size) {
+                    if (entities[i].type === 'plate') {
+                        plateCount++;
+                        document.getElementById('plate-count').innerText = plateCount;
                     } else {
-                        score += 100;
-                        document.getElementById('score').innerText = score;
+                        score += 50;
+                        document.getElementById('game-score').innerText = score;
                     }
-                    collectibles.splice(i, 1);
-                } else if (collectibles[i].x < -50) {
-                    collectibles.splice(i, 1);
+                    entities.splice(i, 1);
+                } else if (entities[i].x < -50) {
+                    entities.splice(i, 1);
                 }
             }
         }
 
-        function draw() {
+        // Main Render Loop
+        function drawGame() {
+            if (canvas.width <= 0 || canvas.height <= 0) return;
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Arka plan grid çizgileri (Açık dünya hissi)
-            ctx.strokeStyle = 'rgba(0, 255, 204, 0.05)';
+            // Draw Cyber Grid Background
+            ctx.strokeStyle = 'rgba(0, 255, 204, 0.04)';
             ctx.lineWidth = 1;
-            for (let i = 0; i < canvas.width; i += 40) {
+            for (let x = 0; x < canvas.width; x += 35) {
                 ctx.beginPath();
-                ctx.moveTo(i, 0);
-                ctx.lineTo(i, canvas.height);
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
                 ctx.stroke();
             }
-            for (let i = 0; i < canvas.height; i += 40) {
+            for (let y = 0; y < canvas.height; y += 35) {
                 ctx.beginPath();
-                ctx.moveTo(0, i);
-                ctx.lineTo(canvas.width, i);
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
                 ctx.stroke();
             }
 
-            // Koleksiyon Nesnelerini Çiz
-            collectibles.forEach(item => {
+            // Draw Entities (Plates & Arduino items)
+            entities.forEach(ent => {
                 ctx.save();
-                ctx.translate(item.x, item.y);
-                if (item.type === 'plate') {
-                    // Beyaz Tabak
+                ctx.translate(ent.x, ent.y);
+                if (ent.type === 'plate') {
+                    // Glowing White Plate
                     ctx.fillStyle = '#ffffff';
                     ctx.shadowBlur = 15;
                     ctx.shadowColor = '#ffffff';
                     ctx.beginPath();
-                    ctx.arc(0, 0, item.size, 0, Math.PI * 2);
+                    ctx.arc(0, 0, ent.size, 0, Math.PI * 2);
                     ctx.fill();
                     ctx.strokeStyle = '#cccccc';
                     ctx.lineWidth = 2;
                     ctx.stroke();
                 } else {
-                    // Arduino / Çip
+                    // Arduino Chip / Part
                     ctx.fillStyle = '#ff007f';
-                    ctx.shadowBlur = 15;
+                    ctx.shadowBlur = 12;
                     ctx.shadowColor = '#ff007f';
-                    ctx.fillRect(-item.size, -item.size / 2, item.size * 2, item.size);
+                    ctx.fillRect(-ent.size, -ent.size / 2, ent.size * 2, ent.size);
                 }
                 ctx.restore();
             });
 
-            // Bisiklet / Karakter Çizimi (Alperen'in Bisikleti)
+            // Draw Bike / Character
             ctx.save();
             ctx.translate(bike.x, bike.y);
             ctx.fillStyle = '#00ffcc';
             ctx.shadowBlur = 20;
             ctx.shadowColor = '#00ffcc';
 
-            // Bisiklet Gövdesi / Tekerlekler
+            // Wheels
             ctx.beginPath();
-            ctx.arc(-12, 10, 10, 0, Math.PI * 2);
-            ctx.arc(12, 10, 10, 0, Math.PI * 2);
+            ctx.arc(-10, 8, 8, 0, Math.PI * 2);
+            ctx.arc(10, 8, 8, 0, Math.PI * 2);
             ctx.fillStyle = '#ff007f';
             ctx.fill();
 
+            // Frame
             ctx.strokeStyle = '#00ffcc';
             ctx.lineWidth = 3;
             ctx.beginPath();
-            ctx.moveTo(-12, 10);
-            ctx.lineTo(0, -5);
-            ctx.lineTo(12, 10);
-            ctx.moveTo(0, -5);
-            ctx.lineTo(0, -15);
+            ctx.moveTo(-10, 8);
+            ctx.lineTo(0, -6);
+            ctx.lineTo(10, 8);
+            ctx.moveTo(0, -6);
+            ctx.lineTo(0, -14);
             ctx.stroke();
 
             ctx.restore();
         }
 
-        function loop() {
-            update();
-            draw();
-            requestAnimationFrame(loop);
+        function gameLoop() {
+            updateGame();
+            drawGame();
+            requestAnimationFrame(gameLoop);
         }
-        loop();
+        gameLoop();
+
+        // --- MATRIX RAIN BACKGROUND ---
+        const matrixCanvas = document.getElementById('matrix-bg');
+        const matrixCtx = matrixCanvas.getContext('2d');
+
+        function resizeMatrix() {
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeMatrix);
+        resizeMatrix();
+
+        const chars = 'ALPEREN010101ARDUINOOSBCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const fontSize = 14;
+        let columns = Math.floor(matrixCanvas.width / fontSize);
+        let drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+
+        function drawMatrix() {
+            matrixCtx.fillStyle = 'rgba(3, 3, 8, 0.08)';
+            matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+            matrixCtx.fillStyle = '#00ffcc';
+            matrixCtx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                matrixCtx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        // Initialization log
+        printToTerminal('[SİSTEM] Tüm bileşenler başarıyla başlatıldı. Sürüşe hazır.');
     </script>
 </body>
 </html>
