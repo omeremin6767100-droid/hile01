@@ -3,456 +3,450 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alperen OS - Ultimate Sandbox & Universe</title>
+    <title>Alperen Evreni - 1000+ Özellik ve Görev</title>
     <style>
         :root {
-            --bg-primary: #090d16;
-            --bg-card: #131c31;
-            --accent-cyan: #06b6d4;
-            --accent-purple: #8b5cf6;
-            --accent-green: #10b981;
-            --text-main: #f1f5f9;
-            --text-muted: #64748b;
-            --border-color: rgba(255, 255, 255, 0.08);
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --border-color: #334155;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --accent-color: #0284c7;
+            --accent-hover: #0369a1;
+            --border-color: #cbd5e1;
+        }
+
+        [data-theme="matrix"] {
+            --bg-color: #020617;
+            --card-bg: #052e16;
+            --text-color: #4ade80;
+            --accent-color: #22c55e;
+            --accent-hover: #16a34a;
+            --border-color: #14532d;
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Courier New', Courier, monospace;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background 0.3s, color 0.3s;
         }
 
         body {
-            background-color: var(--bg-primary);
-            color: var(--text-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
             min-height: 100vh;
-            padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            overflow-x: hidden;
         }
 
         header {
-            text-align: center;
-            margin-bottom: 25px;
-            border-bottom: 2px dashed var(--accent-cyan);
-            padding-bottom: 15px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        select, button {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            border-color: var(--accent-color);
+        }
+
+        main {
+            flex: 1;
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
             width: 100%;
-            max-width: 1300px;
-        }
-
-        header h1 {
-            font-size: 2.8rem;
-            color: var(--accent-cyan);
-            text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
-            letter-spacing: 2px;
-        }
-
-        header p {
-            color: var(--text-muted);
-            font-size: 1rem;
-            margin-top: 5px;
-        }
-
-        .main-grid {
             display: grid;
             grid-template-columns: 350px 1fr;
-            gap: 20px;
-            width: 100%;
-            max-width: 1300px;
-            margin-bottom: 20px;
+            gap: 2rem;
         }
 
         @media (max-width: 900px) {
-            .main-grid {
+            main {
                 grid-template-columns: 1fr;
             }
         }
 
-        .panel {
-            background-color: var(--bg-card);
+        .sidebar {
+            background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-        }
-
-        .panel h2 {
-            font-size: 1.2rem;
-            color: var(--accent-purple);
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-        }
-
-        /* Alperen Karakter Paneli */
-        .alperen-box {
+            border-radius: 1rem;
+            padding: 1.5rem;
+            height: fit-content;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            text-align: center;
+            gap: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        .alperen-avatar {
-            width: 130px;
-            height: 130px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.5rem;
-            cursor: pointer;
-            box-shadow: 0 0 25px rgba(139, 92, 246, 0.6);
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-            user-select: none;
-            margin-bottom: 15px;
-        }
-
-        .alperen-avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 35px rgba(6, 182, 212, 0.8);
-        }
-
-        .alperen-avatar:active {
-            transform: scale(0.95);
-        }
-
-        #alperen-speech {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border-color);
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #cbd5e1;
-            min-height: 60px;
-            width: 100%;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        /* İstatistik Paneli */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .stat-card {
-            background: rgba(0, 0, 0, 0.25);
-            padding: 10px;
-            border-radius: 6px;
+        .stat-box {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
             border: 1px solid var(--border-color);
             text-align: center;
         }
 
-        .stat-num {
-            font-size: 1.3rem;
+        .stat-number {
+            font-size: 2rem;
             font-weight: bold;
-            color: var(--accent-green);
+            color: var(--accent-color);
         }
 
-        .stat-lbl {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        /* 1000+ Görev ve İşlem Matrisi */
-        .matrix-section {
-            width: 100%;
-            max-width: 1300px;
-            background-color: var(--bg-card);
+        .content-area {
+            background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-        .matrix-header {
+            border-radius: 1rem;
+            padding: 2rem;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
         .search-box {
-            background: rgba(0, 0, 0, 0.3);
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: var(--bg-color);
             border: 1px solid var(--border-color);
-            padding: 8px 12px;
-            border-radius: 6px;
-            color: var(--text-main);
-            width: 250px;
+            color: var(--text-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
             outline: none;
         }
 
         .search-box:focus {
-            border-color: var(--accent-cyan);
+            border-color: var(--accent-color);
         }
 
-        .tasks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 10px;
-            max-height: 500px;
+        .list-container {
+            max-height: 550px;
             overflow-y: auto;
-            padding-right: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding-right: 0.5rem;
         }
 
-        .task-card {
-            background: rgba(255, 255, 255, 0.02);
+        .list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .list-container::-webkit-scrollbar-track {
+            background: var(--bg-color);
+            border-radius: 4px;
+        }
+
+        .list-container::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        .item-card {
+            background-color: var(--bg-color);
             border: 1px solid var(--border-color);
-            padding: 10px 12px;
-            border-radius: 6px;
+            padding: 1rem;
+            border-radius: 0.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            transition: background 0.15s, border-color 0.15s;
-            font-size: 0.85rem;
+            gap: 1rem;
         }
 
-        .task-card:hover {
-            background: rgba(6, 182, 212, 0.08);
-            border-color: var(--accent-cyan);
-        }
-
-        .task-card.done {
-            border-color: var(--accent-green);
-            opacity: 0.5;
-            text-decoration: line-through;
-        }
-
-        /* Kontrol Butonları */
-        .btn-group {
+        .item-info {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            flex-direction: column;
+            gap: 0.25rem;
         }
 
-        .btn {
-            background-color: var(--accent-cyan);
-            color: #000;
-            border: none;
-            padding: 10px 15px;
+        .item-id {
+            font-size: 0.8rem;
+            color: var(--accent-color);
             font-weight: bold;
-            border-radius: 6px;
+        }
+
+        .item-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .action-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.3rem;
             cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .action-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+            font-size: 0.9rem;
+            color: var(--border-color);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
             flex: 1;
-            transition: opacity 0.2s;
+            padding: 0.5rem;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 0.4rem;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
         }
 
-        .btn:hover {
-            opacity: 0.85;
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.2);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-purple);
-            border-radius: 3px;
+        .tab-btn.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
         }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
     <header>
-        <h1>⚡ ALPEREN OS v4.20 ⚡</h1>
-        <p>1000+ Sistem Protokolü, Canlı Görev Matrisi ve Etkileşimli Alperen Çekirdeği</p>
+        <h1>⚡ Alperen OS & Portal (1000+ Modül)</h1>
+        <div class="controls">
+            <select id="themeSelector" onchange="changeTheme(this.value)">
+                <option value="dark">Koyu Tema</option>
+                <option value="light">Açık Tema</option>
+                <option value="matrix">Matrix Modu</option>
+            </select>
+            <button onclick="triggerRandomAction()">Rastgele İşlem</button>
+        </div>
     </header>
 
-    <div class="main-grid">
-        <!-- Sol Kolon: Alperen Kontrol Merkezi -->
-        <div class="panel alperen-box">
-            <h2>Ana Karakter</h2>
-            <div class="alperen-avatar" id="alperenAvatar" title="Alperen'e Tıkla!">🤖</div>
-            <p style="font-weight: bold; color: var(--accent-cyan);">Alperen (Sistem Lideri)</p>
-            <div id="alperen-speech">"Sistem aktif. Üzerime tıklayarak komut ver ve görevleri tamamla!"</div>
+    <main>
+        <div class="sidebar">
+            <div class="stat-box">
+                <div>Toplam İçerik / Görev</div>
+                <div class="stat-number" id="totalCount">1250</div>
+            </div>
             
-            <div class="stats-container">
-                <div class="stat-card">
-                    <div class="stat-num" id="clickScore">0</div>
-                    <div class="stat-lbl">Alperen Tıklama</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-num" id="completedCount">0 / 1000</div>
-                    <div class="stat-lbl">Tamamlanan</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-num" id="systemLevel">1</div>
-                    <div class="stat-lbl">Sistem Seviyesi</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-num" id="cpuLoad">12%</div>
-                    <div class="stat-lbl">CPU Yükü</div>
-                </div>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('all', this)">Tümü</button>
+                <button class="tab-btn" onclick="switchTab('missions', this)">Görevler</button>
+                <button class="tab-btn" onclick="switchTab('facts', this)">Alperen Bilgileri</button>
+                <button class="tab-btn" onclick="switchTab('codes', this));">Kod Parçacıkları</button>
             </div>
 
-            <div class="btn-group">
-                <button class="btn" onclick="boostSystem()">Boost At</button>
-                <button class="btn" style="background-color: var(--accent-purple); color: #fff;" onclick="resetSystem()">Sıfırla</button>
+            <div class="stat-box">
+                <div>Tamamlanan Görevler</div>
+                <div class="stat-number" id="completedCount">0</div>
             </div>
+
+            <button onclick="resetProgress()" style="width: 100%; background: #ef4444; border-color: #ef4444; color: white;">Sıfırla</button>
         </div>
 
-        <!-- Sağ Kolon: Açıklama ve Bilgi Konsolu -->
-        <div class="panel">
-            <h2>Sistem Logları & Rehber</h2>
-            <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.5; margin-bottom: 15px;">
-                Bu arayüz tamamen Alperen adına özelleştirilmiş 1000'den fazla bağımsız işlem ve protokol barındırır. Aşağıdaki listeden dilediğin göreve tıklayarak sistemi mühürleyebilir, soldaki Alperen avatarı ile etkileşime geçerek sistem puanı toplayabilirsin.
-            </p>
-            <div style="background: rgba(0,0,0,0.4); padding: 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.8rem; color: #38bdf8; height: 160px; overflow-y: auto;" id="terminalLog">
-                [SYSTEM]: Alperen OS başlatıldı.<br>
-                [SYSTEM]: 1000 adet protokol yükleniyor...<br>
-                [READY]: Tüm modüller kararlı çalışıyor.
+        <div class="content-area">
+            <input type="text" id="searchInput" class="search-box" placeholder="1250+ Alperen içeriği içinde ara..." oninput="filterItems()">
+            <div class="list-container" id="listContainer">
+                <!-- Dinamik olarak 1250+ öğe yüklenecek -->
             </div>
         </div>
-    </div>
+    </main>
 
-    <!-- 1000+ Görev Matrisi Bölümü -->
-    <div class="matrix-section">
-        <div class="matrix-header">
-            <h2>Alperen'in 1000+ Yapılacaklar & Aktivite Matrisi</h2>
-            <div style="display: flex; gap: 10px;">
-                <input type="text" class="search-box" id="searchBox" placeholder="Görev ara (Örn: 542)..." onkeyup="filterTasks()">
-                <button class="btn" style="padding: 8px 15px;" onclick="completeAll()">Hepsini Bitir</button>
-            </div>
-        </div>
-        <div class="tasks-grid" id="tasksGrid">
-            <!-- JavaScript ile 1000 görev otomatik doldurulacak -->
-        </div>
-    </div>
+    <footer>
+        <p>Alperen Evreni Projesi &copy; 2026 - Tüm Hakları Saklıdır (1000+ Modül Aktif)</p>
+    </footer>
 
     <script>
-        // Değişkenler
-        let clicks = 0;
-        let completedTasksCount = 0;
-        let level = 1;
-        const totalTasks = 1000;
-        let taskList = [];
-
-        // Alperen Diyalogları Havuzu
-        const dialogues = [
-            "Kodlar kusursuz çalışıyor, aynen devam!",
-            "Beni yine tıkladın! Puanın arttı.",
-            "GitHub Pages üzerinde harika bir performans sergiliyoruz.",
-            "1000 görevi bitirebilecek iraden var mı bakalım?",
-            "Alperen gücü sistemde hissediliyor!",
-            "Donanım sıcaklığı normal, stabil çalışıyoruz.",
-            "Bisiklet turu veya oyun arası vermeden kodlamaya devam!",
-            "Blender, Unity veya Godot projelerini unutma!",
-            "Sistem yöneticisi Alperen emreder, kodlar yazılır."
+        // 1250+ Öğeden Oluşan Veritabanı Otomatik Oluşturucu
+        const categories = ['missions', 'facts', 'codes'];
+        const prefixes = [
+            "Alperen'in", "Efsanevi Alperen", "Süper Alperen", "Ultra Alperen", 
+            "Mega Alperen", "Cyber Alperen", "Quantum Alperen", "Master Alperen"
+        ];
+        const actions = [
+            "Kod Yazma Görevi #", "Algoritma Çözümü #", "Sistem Optimizasyonu #", 
+            "Veritabanı Analizi #", "Donanım Testi #", "Yapay Zeka Eğitimi #", 
+            "Güvenlik Duvarı Kırma #", "Pixel Art Tasarımı #"
         ];
 
-        // Elementler
-        const avatar = document.getElementById('alperenAvatar');
-        const speechBox = document.getElementById('alperen-speech');
-        const clickScoreEl = document.getElementById('clickScore');
-        const completedCountEl = document.getElementById('completedCount');
-        const systemLevelEl = document.getElementById('systemLevel');
-        const tasksGrid = document.getElementById('tasksGrid');
-        const terminalLog = document.getElementById('terminalLog');
-        const searchBox = document.getElementById('searchBox');
+        let database = [];
+        let currentTab = 'all';
+        let completedItems = new Set();
 
-        // Alperen Tıklama Olayı
-        avatar.addEventListener('click', () => {
-            clicks++;
-            clickScoreEl.textContent = clicks;
-
-            const randomMsg = dialogues[Math.floor(Math.random() * dialogues.length)];
-            speechBox.textContent = `"${randomMsg}"`;
-
-            logToTerminal(`[INTERACTION]: Alperen tıklandı. Skor: ${clicks}`);
-
-            if (clicks % 30 === 0) {
-                level++;
-                systemLevelEl.textContent = level;
-                logToTerminal(`[LEVEL UP]: Sistem Seviye ${level} oldu!`);
-            }
-        });
-
-        // 1000 Görevi Oluşturma
-        for (let i = 1; i <= totalTasks; i++) {
-            taskList.push({
-                id: i,
-                title: `Alperen Protokolü #${i}: Sistem Optimizasyonu`,
-                done: false
-            });
-        }
-
-        function renderTasks(filter = '') {
-            tasksGrid.innerHTML = '';
-            const filtered = taskList.filter(t => t.title.toLowerCase().includes(filter.toLowerCase()) || t.id.toString().includes(filter));
-            
-            filtered.forEach(task => {
-                const card = document.createElement('div');
-                card.className = `task-card ${task.done ? 'done' : ''}`;
-                card.innerHTML = `<span>${task.title}</span> <span>${task.done ? '✔' : '⏳'}</span>`;
-                
-                card.addEventListener('click', () => {
-                    task.done = !task.done;
-                    if (task.done) {
-                        completedTasksCount++;
-                        logToTerminal(`[TASK]: Protokol #${task.id} tamamlandı.`);
-                    } else {
-                        completedTasksCount--;
-                        logToTerminal(`[TASK]: Protokol #${task.id} askıya alındı.`);
-                    }
-                    completedCountEl.textContent = `${completedTasksCount} / ${totalTasks}`;
-                    renderTasks(searchBox.value);
+        function generateDatabase() {
+            let id = 1;
+            // 1250 adet öğe üretelim
+            for (let i = 0; i < 500; i++) {
+                database.push({
+                    id: id++,
+                    category: 'missions',
+                    title: `Görev ${i + 1}: ${actions[i % actions.length]} ${i + 1}`,
+                    desc: `Alperen için özel olarak hazırlanan zorluk seviyesi ${ (i % 5) + 1 } olan pratik görevi tamamla.`
                 });
-
-                tasksGrid.appendChild(card);
-            });
+            }
+            for (let i = 0; i < 400; i++) {
+                database.push({
+                    id: id++,
+                    category: 'facts',
+                    title: `Alperen Gerçeği #${i + 1}`,
+                    desc: `Alperen'in teknoloji, yazılım ve evren hakkındaki ${i + 1}. büyük keşfi ve bilgisi.`
+                });
+            }
+            for (let i = 0; i < 350; i++) {
+                database.push({
+                    id: id++,
+                    category: 'codes',
+                    title: `Kod Parçacığı #${i + 1} (Snippet)`,
+                    desc: `Alperen sistemleri için optimize edilmiş ${i + 1} numaralı hazır fonksiyon ve script.`
+                });
+            }
+            document.getElementById('totalCount').innerText = database.length;
         }
 
-        function filterTasks() {
-            renderTasks(searchBox.value);
-        }
+        function renderList(itemsToRender) {
+            const container = document.getElementById('listContainer');
+            container.innerHTML = '';
 
-        function boostSystem() {
-            logToTerminal(`[BOOST]: Alperen Turbo Modu aktif edildi!`);
-            alert("🚀 Alperen Turbo Modu Devrede! İşlemci saat hızları maksimuma çıkarıldı.");
-        }
+            if (itemsToRender.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--border-color);">Hiçbir içerik bulunamadı.</div>';
+                return;
+            }
 
-        function resetSystem() {
-            if (confirm("Sistemi sıfırlamak istediğine emin misin?")) {
-                clicks = 0;
-                completedTasksCount = 0;
-                level = 1;
-                clickScoreEl.textContent = clicks;
-                completedCountEl.textContent = `${completedTasksCount} / ${totalTasks}`;
-                systemLevelEl.textContent = level;
-                taskList.forEach(t => t.done = false);
-                renderTasks();
-                logToTerminal(`[RESET]: Sistem fabrika ayarlarına döndürüldü.`);
+            // Performans için ilk 100 öğeyi gösterelim, arama yapıldıkça filtrelenir
+            const limit = itemsToRender.length > 100 ? 100 : itemsToRender.length;
+            
+            for (let i = 0; i < limit; i++) {
+                const item = itemsToRender[i];
+                const isCompleted = completedItems.has(item.id);
+
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                card.style.opacity = isCompleted ? '0.6' : '1';
+
+                card.innerHTML = `
+                    <div class="item-info">
+                        <span class="item-id">#${item.id} [${item.category.toUpperCase()}]</span>
+                        <div class="item-title" style="${isCompleted ? 'text-decoration: line-through;' : ''}">${item.title}</div>
+                        <div style="font-size: 0.85rem; color: var(--border-color);">${item.desc}</div>
+                    </div>
+                    <button class="action-btn" onclick="toggleComplete(${item.id})">
+                        ${isCompleted ? 'İptal Et' : 'Tamamla'}
+                    </button>
+                `;
+                container.appendChild(card);
+            }
+
+            if (itemsToRender.length > 100) {
+                const info = document.createElement('div');
+                info.style.textAlign = 'center';
+                info.style.padding = '1rem';
+                info.style.color = 'var(--accent-color)';
+                info.innerText = `Performans için ilk 100 / ${itemsToRender.length} öğe gösteriliyor. Aramayı daraltın.`;
+                container.appendChild(info);
             }
         }
 
-        function completeAll() {
-            taskList.forEach(t => t.done = true);
-            completedTasksCount = totalTasks;
-            completedCountEl.textContent = `${completedTasksCount} / ${totalTasks}`;
-            renderTasks();
-            logToTerminal(`[WARNING]: Tüm 1000 protokol zorla mühürlendi!`);
+        function filterItems() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = database.filter(item => {
+                const matchesTab = currentTab === 'all' || item.category === currentTab;
+                const matchesQuery = item.title.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query) || item.id.toString().includes(query);
+                return matchesTab && matchesQuery;
+            });
+            renderList(filtered);
         }
 
-        function logToTerminal(text) {
-            terminalLog.innerHTML += `<br>${text}`;
-            terminalLog.scrollTop = terminalLog.scrollHeight;
+        function switchTab(tab, btn) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterItems();
         }
 
-        // İlk yükleme
-        renderTasks();
+        function toggleComplete(id) {
+            if (completedItems.has(id)) {
+                completedItems.delete(id);
+            } else {
+                completedItems.add(id);
+            }
+            document.getElementById('completedCount').innerText = completedItems.size;
+            filterItems();
+        }
+
+        function changeTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+        }
+
+        function triggerRandomAction() {
+            const randomId = Math.floor(Math.random() * database.length) + 1;
+            const item = database.find(d => d.id === randomId);
+            if (item) {
+                document.getElementById('searchInput').value = item.title;
+                filterItems();
+            }
+        }
+
+        function resetProgress() {
+            completedItems.clear();
+            document.getElementById('completedCount').innerText = 0;
+            filterItems();
+        }
+
+        // Başlangıç
+        window.onload = function() {
+            generateDatabase();
+            filterItems();
+        };
     </script>
 </body>
 </html>
