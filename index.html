@@ -2,59 +2,630 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Hile01 - Pro Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Outdoor Bisiklet Simülatörü - Pro Edition</title>
+    <!-- Matter.js Fizik Kütüphanesi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <style>
-        body { 
-            background-color: #050505; 
-            color: #00ff00; 
-            font-family: 'Courier New', monospace;
-            text-align: center;
-            padding: 20px;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+            cursor: none; /* Çok havalı özel fare imleci için varsayılanı gizle */
         }
-        .panel {
-            border: 3px solid #00ff00;
-            padding: 20px;
-            display: inline-block;
-            background: #000;
-            box-shadow: 0 0 30px #00ff00;
-            border-radius: 20px;
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1c29, #0f1016);
+            color: #f0f0f5;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
-        h1 { font-size: 45px; letter-spacing: 5px; margin-bottom: 10px; }
-        iframe { 
-            border: 2px solid #00ff00; 
-            border-radius: 10px; 
-            background: #fff; /* Oyunun beyaz arka planı için */
-            margin-top: 20px;
+
+        /* Havalı Özel Fare İmleci (Custom Mouse) */
+        #custom-cursor {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ffffff;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.15s, height 0.15s, background 0.15s;
+            z-index: 9999;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.5);
         }
-        .status { color: #ff0000; font-weight: bold; margin-top: 10px; }
+        #custom-cursor::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 6px;
+            height: 6px;
+            background: #ff3366;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        body:active #custom-cursor {
+            width: 18px;
+            height: 18px;
+            background: rgba(255, 51, 102, 0.5);
+        }
+
+        /* Üst Menü */
+        header {
+            background-color: rgba(26, 28, 41, 0.9);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 65px;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .logo span {
+            color: #ff3366;
+        }
+
+        .global-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
         .btn {
-            background: #00ff00; color: #000; border: none;
-            padding: 10px 20px; font-weight: bold; cursor: pointer;
-            border-radius: 5px; margin: 10px;
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(5px);
         }
-        .btn:hover { background: #fff; }
+
+        .btn:hover {
+            background-color: rgba(255, 255, 255, 0.18);
+            border-color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn.primary {
+            background-color: #ff3366;
+            border-color: #ff3366;
+        }
+        .btn.primary:hover {
+            background-color: #ff1953;
+        }
+
+        /* Ana Alan */
+        .workspace {
+            display: flex;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Sol Taraf: Beyaz Tabak Parkur & Eşya Paneli */
+        .sidebar {
+            width: 320px;
+            background-color: rgba(18, 20, 30, 0.95);
+            border-right: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            gap: 15px;
+            z-index: 5;
+            backdrop-filter: blur(10px);
+            box-shadow: 5px 0 25px rgba(0,0,0,0.5);
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            color: #ffffff;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .plate-badge {
+            background: #ffffff;
+            color: #12141e;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 800;
+        }
+
+        .spawn-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            overflow-y: auto;
+            flex: 1;
+            padding-right: 4px;
+        }
+
+        .spawn-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+        .spawn-grid::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .spawn-card {
+            background-color: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .spawn-card:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: #ff3366;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.2);
+        }
+
+        .spawn-card .icon {
+            font-size: 2rem;
+            margin-bottom: 6px;
+        }
+
+        .spawn-card .name {
+            font-size: 0.8rem;
+            color: #e0e0f0;
+            font-weight: 600;
+        }
+
+        /* Tuval Alanı */
+        #canvas-container {
+            flex: 1;
+            position: relative;
+            background: radial-gradient(circle at center, #25283d 0%, #0d0e14 100%);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Bilgi Paneli / Tuşlar */
+        .controls-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(18, 20, 30, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px 18px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .controls-info h4 {
+            font-size: 0.9rem;
+            color: #ff3366;
+            margin-bottom: 6px;
+        }
+
+        .controls-info ul {
+            list-style: none;
+            font-size: 0.8rem;
+            color: #b0b0c0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .controls-info kbd {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #fff;
+            font-family: monospace;
+        }
+
+        /* Alt Durum Çubuğu */
+        .status-bar {
+            position: absolute;
+            bottom: 15px;
+            left: 335px;
+            background: rgba(18, 20, 30, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #b0b0c0;
+            pointer-events: none;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
 
-    <div class="panel">
-        <h1>HILE01.V1</h1>
-        <div class="status">SİSTEM DURUMU: ERİŞİM ONAYLANDI</div>
-        
-        <p>Aşağıdaki ekrandan oyunu başlatabilirsin:</p>
-        
-        <iframe src="https://chromedino.com/" width="600" height="200"></iframe>
-        
-        <br>
-        <p>Hile Komutları İçin <b>F12</b> Tuşuna Bas ve Konsolu Aç!</p>
-        
-        <button class="btn" onclick="alert('Ölümsüzlük: Runner.prototype.gameOver = function (){}')">Ölümsüzlük Kodunu Gör</button>
-        <button class="btn" onclick="alert('Hız: Runner.instance_.setSpeed(100)')">Hız Kodunu Gör</button>
+    <!-- Çok Havalı Özel Fare İmleci -->
+    <div id="custom-cursor"></div>
+
+    <header>
+        <div class="logo">
+            <span>🚲</span> Dışarıda Bisiklet & Parkur Simülatörü
+        </div>
+        <div class="global-controls">
+            <button class="btn primary" id="btnSpawnBike">🚴‍♂️ Yeni Bisiklet Çağır</button>
+            <button class="btn" id="btnGravity">🌍 Yerçekimi: Normal</button>
+            <button class="btn" id="btnClear">🗑️ Parkuru Temizle</button>
+        </div>
+    </header>
+
+    <div class="workspace">
+        <!-- Sol Taraf: Beyaz Tabak Parkur Elemanları & Eşyalar -->
+        <div class="sidebar">
+            <div class="sidebar-title">
+                Beyaz Tabak Parkur & Eşyalar
+                <span class="plate-badge">PRO</span>
+            </div>
+            <div class="spawn-grid">
+                <div class="spawn-card" data-spawn="plate_ramp">
+                    <div class="icon">🍽️</div>
+                    <div class="name">Beyaz Tabak Rampa</div>
+                </div>
+                <div class="spawn-card" data-spawn="plate_platform">
+                    <div class="icon">⚪</div>
+                    <div class="name">Beyaz Tabak Zemin</div>
+                </div>
+                <div class="spawn-card" data-spawn="box">
+                    <div class="icon">📦</div>
+                    <div class="name">Ahşap Kutu</div>
+                </div>
+                <div class="spawn-card" data-spawn="metalbox">
+                    <div class="icon">🧊</div>
+                    <div class="name">Metal Kutu</div>
+                </div>
+                <div class="spawn-card" data-spawn="ball">
+                    <div class="icon">⚽</div>
+                    <div class="name">Zıplayan Top</div>
+                </div>
+                <div class="spawn-card" data-spawn="barrel">
+                    <div class="icon">🛢️</div>
+                    <div class="name">Patlayıcı Varil</div>
+                </div>
+                <div class="spawn-card" data-spawn="spike">
+                    <div class="icon">⚠️</div>
+                    <div class="name">Dikenli Engel</div>
+                </div>
+                <div class="spawn-card" data-spawn="tree">
+                    <div class="icon">🌲</div>
+                    <div class="name">Ağaç (Doğa)</div>
+                </div>
+                <div class="spawn-card" data-spawn="cloud">
+                    <div class="icon">☁️</div>
+                    <div class="name">Yüzen Bulut</div>
+                </div>
+                <div class="spawn-card" data-spawn="ramp">
+                    <div class="icon">📐</div>
+                    <div class="name">Atlama Rampası</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fizik Tuval Alanı -->
+        <div id="canvas-container">
+            <div class="controls-info">
+                <h4>🎮 Bisiklet Kontrolleri</h4>
+                <ul>
+                    <li><kbd>A</kbd> / <kbd>D</kbd> veya <kbd>←</kbd> / <kbd>→</kbd> : Pedal Çevir</li>
+                    <li><kbd>W</kbd> / <kbd>S</kbd> veya <kbd>↑</kbd> / <kbd>↓</kbd> : Öne / Arkaya Eğil</li>
+                    <li>Mouse Sürükle : Nesneleri Tut & Fırlat</li>
+                </ul>
+            </div>
+            <div class="status-bar" id="statusBar">
+                ✨ Harika bir dışarıda bisiklet turu için soldan beyaz tabak rampa seçip ekrana tıklayın!
+            </div>
+        </div>
     </div>
 
     <script>
-        console.log("Hile01 Sisteme Sızdı...");
-    </script>
+        // Özel Havalı Fare İmleci Takip Scripti
+        const cursor = document.getElementById('custom-cursor');
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
 
+        // Matter.js Modülleri
+        const { Engine, Render, Runner, Bodies, Composite, Constraint, Mouse, MouseConstraint, Vector, Events, Body } = Matter;
+
+        // Motor ve Dünya
+        const engine = Engine.create();
+        const world = engine.world;
+        engine.world.gravity.y = 1.2;
+
+        const container = document.getElementById('canvas-container');
+        
+        const render = Render.create({
+            element: container,
+            engine: engine,
+            options: {
+                width: container.clientWidth,
+                height: container.clientHeight,
+                wireframes: false,
+                background: 'transparent'
+            }
+        });
+
+        Render.run(render);
+        const runner = Runner.create();
+        Runner.run(runner, engine);
+
+        // Ekran Boyutu Güncelleme
+        window.addEventListener('resize', () => {
+            render.canvas.width = container.clientWidth;
+            render.canvas.height = container.clientHeight;
+            updateBoundaries();
+        });
+
+        // Sınır Duvarları ve Beyaz Tabak Zemin Parkuru
+        let ground, leftWall, rightWall;
+        function updateBoundaries() {
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+            
+            if (ground) Composite.remove(world, [ground, leftWall, rightWall]);
+
+            // Dışarıda bisiklet sürüşü için uzun beyaz tabak görünümlü zemin
+            ground = Bodies.rectangle(w / 2, h - 30, w * 3, 60, { 
+                isStatic: true, 
+                render: { fillStyle: '#ffffff' },
+                friction: 0.8
+            });
+            leftWall = Bodies.rectangle(-30, h / 2, 60, h * 2, { isStatic: true, render: { visible: false } });
+            rightWall = Bodies.rectangle(w * 1.5, h / 2, 60, h * 2, { isStatic: true, render: { visible: false } });
+
+            Composite.add(world, [ground, leftWall, rightWall]);
+        }
+        updateBoundaries();
+
+        // Fare Etkileşimi (Mouse Constraint)
+        const mouse = Mouse.create(render.canvas);
+        const mouseConstraint = MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+                stiffness: 0.2,
+                render: {
+                    visible: true,
+                    strokeStyle: '#ff3366',
+                    lineWidth: 3
+                }
+            }
+        });
+        Composite.add(world, mouseConstraint);
+        render.mouse = mouse;
+
+        // --- BİSİKLET OLUŞTURUCU FONKSİYONU ---
+        let currentBikeWheels = [];
+        let bikeBodyParts = [];
+
+        function spawnBike(x, y) {
+            // Önceki bisikleti temizlemiyorsak yeni bir tane ekle
+            const group = Body.nextGroup(true);
+
+            // Tekerlekler
+            const wheelOptions = {
+                collisionFilter: { group: group },
+                friction: 1.2,
+                restitution: 0.2,
+                render: { fillStyle: '#111116', strokeStyle: '#ffffff', lineWidth: 4 }
+            };
+
+            const wheelA = Bodies.circle(x - 50, y + 30, 24, wheelOptions);
+            const wheelB = Bodies.circle(x + 50, y + 30, 24, wheelOptions);
+
+            // Bisiklet Kadrosu (Beyaz Tabak Stilinde Şık Gövde)
+            const bikeFrame = Bodies.rectangle(x, y, 110, 25, {
+                collisionFilter: { group: group },
+                density: 0.02,
+                render: { fillStyle: '#ffffff', strokeStyle: '#ff3366', lineWidth: 3 }
+            });
+
+            // Sürücü (İnsan / Ragdoll)
+            const riderHead = Bodies.circle(x, y - 45, 16, { collisionFilter: { group: group }, render: { fillStyle: '#ffcc99' } });
+            const riderTorso = Bodies.rectangle(x, y - 20, 25, 40, { collisionFilter: { group: group }, render: { fillStyle: '#ff3366' } });
+            const riderLeg = Bodies.rectangle(x, y + 10, 12, 35, { collisionFilter: { group: group }, render: { fillStyle: '#3366cc' } });
+
+            // Yaylar / Bağlantılar (Süspansiyon ve Eklem Yapısı)
+            const axelA = Constraint.create({
+                bodyA: wheelA,
+                bodyB: bikeFrame,
+                pointA: { x: 0, y: 0 },
+                pointB: { x: -50, y: 15 },
+                stiffness: 0.9,
+                length: 0,
+                render: { visible: false }
+            });
+
+            const axelB = Constraint.create({
+                bodyA: wheelB,
+                bodyB: bikeFrame,
+                pointA: { x: 0, y: 0 },
+                pointB: { x: 50, y: 15 },
+                stiffness: 0.9,
+                length: 0,
+                render: { visible: false }
+            });
+
+            // Sürücü Bağlantıları
+            const neck = Constraint.create({ bodyA: riderHead, bodyB: riderTorso, pointA: {x:0, y:12}, pointB: {x:0, y:-20}, stiffness: 0.8, render: { visible: false } });
+            const torsoToBike = Constraint.create({ bodyA: riderTorso, bodyB: bikeFrame, pointA: {x:0, y:20}, pointB: {x:0, y:-10}, stiffness: 0.7, render: { visible: false } });
+
+            currentBikeWheels.push(wheelA, wheelB);
+            bikeBodyParts.push(bikeFrame, riderHead, riderTorso, riderLeg);
+
+            Composite.add(world, [
+                wheelA, wheelB, bikeFrame, riderHead, riderTorso, riderLeg,
+                axelA, axelB, neck, torsoToBike
+            ]);
+        }
+
+        // --- BEYAZ TABAK & DİĞER EŞYALARI ÜRETME ---
+        function spawnItem(type, x, y) {
+            let obj;
+            switch(type) {
+                case 'plate_ramp':
+                    // Beyaz tabak rampa (Oval / Yuvarlak şık eğim)
+                    obj = Bodies.trapezoid(x, y, 140, 40, 0.5, {
+                        render: { fillStyle: '#ffffff', strokeStyle: '#e0e0e0', lineWidth: 4 },
+                        restitution: 0.4,
+                        friction: 0.2
+                    });
+                    break;
+                case 'plate_platform':
+                    // Beyaz tabak platform
+                    obj = Bodies.rectangle(x, y, 180, 25, {
+                        render: { fillStyle: '#ffffff', strokeStyle: '#d0d0d0', lineWidth: 3 },
+                        restitution: 0.2,
+                        friction: 0.5
+                    });
+                    break;
+                case 'box':
+                    obj = Bodies.rectangle(x, y, 50, 50, { render: { fillStyle: '#d2a679' }, restitution: 0.2, friction: 0.8 });
+                    break;
+                case 'metalbox':
+                    obj = Bodies.rectangle(x, y, 50, 50, { render: { fillStyle: '#708090' }, restitution: 0.1, density: 0.03 });
+                    break;
+                case 'ball':
+                    obj = Bodies.circle(x, y, 25, { render: { fillStyle: '#ff3366' }, restitution: 0.85 });
+                    break;
+                case 'barrel':
+                    obj = Bodies.circle(x, y, 25, { render: { fillStyle: '#ff9900' }, restitution: 0.4 });
+                    obj.isExplosive = true;
+                    break;
+                case 'spike':
+                    obj = Bodies.polygon(x, y, 3, 35, { render: { fillStyle: '#e74c3c' }, restitution: 0.1 });
+                    break;
+                case 'tree':
+                    obj = Bodies.rectangle(x, y, 30, 90, { render: { fillStyle: '#2ecc71' } });
+                    break;
+                case 'cloud':
+                    obj = Bodies.circle(x, y, 40, { render: { fillStyle: 'rgba(255,255,255,0.7)' }, isStatic: true });
+                    break;
+                case 'ramp':
+                    obj = Bodies.trapezoid(x, y, 120, 50, 0.4, { render: { fillStyle: '#9b59b6' }, restitution: 0.3 });
+                    break;
+            }
+            if (obj) Composite.add(world, obj);
+        }
+
+        // --- KLAVYE İLE BİSİKLET KONTROLÜ (PEDAL & EĞİLME) ---
+        const keys = {};
+        window.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+
+        Events.on(engine, 'beforeUpdate', () => {
+            currentBikeWheels.forEach(wheel => {
+                if (!wheel) return;
+                // A/D veya Sol/Sağ ok tuşlarıyla tekerleklere tork (pedal gücü) ver
+                if (keys['d'] || keys['arrowright']) {
+                    Body.setAngularVelocity(wheel, wheel.angularVelocity + 0.1);
+                }
+                if (keys['a'] || keys['arrowleft']) {
+                    Body.setAngularVelocity(wheel, wheel.angularVelocity - 0.1);
+                }
+            });
+        });
+
+        // --- ARAYÜZ ETKİLEŞİMLERİ ---
+        const spawnCards = document.querySelectorAll('.spawn-card');
+        let selectedSpawnType = 'plate_ramp';
+
+        spawnCards.forEach(card => {
+            card.addEventListener('click', () => {
+                spawnCards.forEach(c => c.style.borderColor = 'rgba(255,255,255,0.1)');
+                card.style.borderColor = '#ff3366';
+                selectedSpawnType = card.getAttribute('data-spawn');
+            });
+        });
+
+        // Tıklanan yere seçilen eşyayı üretme
+        const canvasEl = render.canvas;
+        canvasEl.addEventListener('click', (e) => {
+            const rect = canvasEl.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            spawnItem(selectedSpawnType, x, y);
+        });
+
+        // Üst Menü Butonları
+        document.getElementById('btnSpawnBike').addEventListener('click', () => {
+            spawnBike(container.clientWidth / 2 - 100, container.clientHeight / 2 - 150);
+        });
+
+        let gravityNormal = true;
+        const btnGravity = document.getElementById('btnGravity');
+        btnGravity.addEventListener('click', () => {
+            gravityNormal = !gravityNormal;
+            engine.world.gravity.y = gravityNormal ? 1.2 : -0.5;
+            btnGravity.textContent = gravityNormal ? '🌍 Yerçekimi: Normal' : '🚀 Yerçekimi: Ters';
+        });
+
+        document.getElementById('btnClear').addEventListener('click', () => {
+            const allBodies = Composite.allBodies(world);
+            const customBodies = allBodies.filter(b => b !== ground && b !== leftWall && b !== rightWall);
+            Composite.remove(world, customBodies);
+            const allConstraints = Composite.allConstraints(world);
+            const customConstraints = allConstraints.filter(c => c !== mouseConstraint.constraint);
+            Composite.remove(world, customConstraints);
+            currentBikeWheels = [];
+            bikeBodyParts = [];
+        });
+
+        // Başlangıçta sahneye havalı bir bisiklet ve beyaz tabak rampa ekleyelim
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                spawnItem('plate_ramp', w / 2 - 150, h - 150);
+                spawnItem('plate_platform', w / 2 + 150, h - 220);
+                spawnBike(w / 2 - 250, h - 300);
+            }, 250);
+        });
+    </script>
 </body>
 </html>
