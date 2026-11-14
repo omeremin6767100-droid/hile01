@@ -3,898 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALPEREN ULTIMATE CYBER OS v9.5 - Pro Edition</title>
+    <title>Alperen Evreni - Ultimate Portal</title>
     <style>
-        /* ==========================================================================
-           ALPEREN ULTIMATE CYBER OS - MASTER STYLESHEET
-           ========================================================================== */
         :root {
-            --primary: #00ffcc;
-            --secondary: #ff007f;
-            --accent: #ffff00;
-            --bg-dark: #030308;
-            --bg-panel: rgba(10, 10, 25, 0.85);
-            --border-glow: 0 0 15px rgba(0, 255, 204, 0.4);
-            --font-main: 'Courier New', Courier, monospace;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #22c55e;
+            --danger: #ef4444;
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-            cursor: none !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--primary);
-            font-family: var(--font-main);
-            overflow: hidden;
-            width: 100vw;
-            height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
 
-        /* --- CUSTOM ADVANCED CURSOR SYSTEM --- */
-        #alperen-cursor {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 28px;
-            height: 28px;
-            border: 2px solid var(--primary);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
-            z-index: 99999;
-            box-shadow: 0 0 20px var(--primary), inset 0 0 8px var(--primary);
-        }
-
-        #alperen-cursor-dot {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 6px;
-            height: 6px;
-            background-color: var(--secondary);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 100000;
-            box-shadow: 0 0 12px var(--secondary);
-        }
-
-        .cursor-trail {
-            position: fixed;
-            pointer-events: none;
-            width: 12px;
-            height: 12px;
-            background: radial-gradient(circle, rgba(0,255,204,0.8) 0%, rgba(255,0,127,0.2) 100%);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 99998;
-            animation: cursorFade 0.6s forwards;
-        }
-
-        @keyframes cursorFade {
-            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.1); }
-        }
-
-        /* --- TOP SYSTEM BAR --- */
         header {
-            height: 45px;
-            background: rgba(5, 5, 15, 0.95);
-            border-bottom: 2px solid var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            box-shadow: 0 5px 25px rgba(0, 255, 204, 0.15);
-            z-index: 100;
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        .logo-area {
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--secondary);
-            text-shadow: 0 0 10px var(--secondary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
         }
 
-        .system-status {
-            display: flex;
-            gap: 20px;
-            font-size: 13px;
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
         }
 
-        .status-pill {
-            background: rgba(0, 255, 204, 0.1);
-            border: 1px solid var(--primary);
-            padding: 4px 10px;
-            border-radius: 4px;
-            box-shadow: inset 0 0 5px rgba(0, 255, 204, 0.2);
-        }
-
-        /* --- MAIN DESKTOP / WORKSPACE --- */
-        .workspace {
-            flex: 1;
+        .dashboard {
             display: grid;
-            grid-template-columns: 320px 1fr 350px;
-            grid-template-rows: 1fr 200px;
-            gap: 15px;
-            padding: 15px;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #0a0a1a 0%, #020205 100%);
-        }
-
-        /* --- COMMON PANEL STYLING --- */
-        .panel {
-            background: var(--bg-panel);
-            border: 1px solid var(--primary);
-            border-radius: 8px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: var(--border-glow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .panel::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
             width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            max-width: 1200px;
+            margin-bottom: 30px;
         }
 
-        .panel-title {
-            font-size: 15px;
-            font-weight: bold;
-            color: var(--secondary);
-            text-shadow: 0 0 8px var(--secondary);
-            border-bottom: 1px dashed rgba(0, 255, 204, 0.3);
-            padding-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* --- LEFT COLUMN: CONTROLS & HARDWARE --- */
-        .left-col {
-            grid-column: 1 / 2;
-            grid-row: 1 / 3;
+        .card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+            border-bottom: 2px solid rgba(56, 189, 248, 0.2);
+            padding-bottom: 8px;
+        }
+
+        /* Alperen Karakter Bölümü */
+        .alperen-container {
+            text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            align-items: center;
+            justify-content: center;
         }
 
-        .btn {
-            background: transparent;
-            border: 1px solid var(--secondary);
-            color: var(--secondary);
-            padding: 10px;
-            font-family: inherit;
-            font-weight: bold;
-            border-radius: 5px;
+        .alperen-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #38bdf8, #6366f1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
             cursor: pointer;
-            transition: all 0.2s ease;
-            text-shadow: 0 0 5px var(--secondary);
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 15px;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+            user-select: none;
+        }
+
+        .alperen-avatar:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.8);
+        }
+
+        .alperen-avatar:active {
+            transform: scale(0.95);
+        }
+
+        #alperen-dialogue {
+            font-style: italic;
+            color: var(--text-muted);
+            min-height: 40px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            width: 100%;
+        }
+
+        /* Sayaçlar ve İstatistikler */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 8px;
             text-align: center;
         }
 
-        .btn:hover {
-            background: var(--secondary);
-            color: var(--bg-dark);
-            box-shadow: 0 0 25px var(--secondary);
-            transform: translateY(-2px);
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--success);
         }
 
-        .btn-primary {
-            border-color: var(--primary);
-            color: var(--primary);
-            text-shadow: 0 0 5px var(--primary);
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
 
-        .btn-primary:hover {
-            background: var(--primary);
-            color: var(--bg-dark);
-            box-shadow: 0 0 25px var(--primary);
-        }
-
-        /* --- CENTER COLUMN: GAME & VISUALIZER CANVAS --- */
-        .center-col {
-            grid-column: 2 / 3;
-            grid-row: 1 / 2;
-            padding: 0;
-            background: #000;
-            position: relative;
-        }
-
-        #gameCanvas {
+        /* 1000+ Görevler Listesi Alanı */
+        .tasks-section {
             width: 100%;
-            height: 100%;
-            display: block;
+            max-width: 1200px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
-        .canvas-overlay-hud {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid var(--primary);
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 13px;
-            pointer-events: none;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
-        }
-
-        /* --- BOTTOM COLUMN: TERMINAL EMULATOR --- */
-        .bottom-col {
-            grid-column: 2 / 3;
-            grid-row: 2 / 3;
-            background: rgba(2, 2, 8, 0.95);
-            font-family: 'Courier New', Courier, monospace;
+        .tasks-header {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        .terminal-output {
-            flex: 1;
+        .tasks-container {
+            max-height: 400px;
             overflow-y: auto;
-            font-size: 12px;
-            line-height: 1.5;
-            color: var(--primary);
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 10px;
             padding-right: 5px;
         }
 
-        .terminal-output::-webkit-scrollbar {
-            width: 6px;
-        }
-        .terminal-output::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 3px;
-        }
-
-        .terminal-input-line {
+        .task-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 10px 15px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-top: 8px;
-            border-top: 1px solid rgba(0, 255, 204, 0.2);
-            padding-top: 8px;
-        }
-
-        .terminal-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--accent);
-            font-family: inherit;
-            font-size: 13px;
-            outline: none;
-            cursor: none !important;
-        }
-
-        /* --- RIGHT COLUMN: STATS & ARDUINO TELEMETRY --- */
-        .right-col {
-            grid-column: 3 / 4;
-            grid-row: 1 / 3;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .telemetry-row {
-            display: flex;
             justify-content: space-between;
-            font-size: 13px;
-            padding: 6px 0;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-        }
-
-        .highlight {
-            color: var(--accent);
-            text-shadow: 0 0 6px var(--accent);
-            font-weight: bold;
-        }
-
-        /* Tab System */
-        .tab-buttons {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 5px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            background: rgba(0, 255, 204, 0.05);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 6px;
-            font-size: 11px;
-            text-align: center;
-            border-radius: 3px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: background 0.2s;
         }
 
-        .tab-btn.active, .tab-btn:hover {
-            background: var(--primary);
-            color: var(--bg-dark);
+        .task-item:hover {
+            background: rgba(56, 189, 248, 0.1);
         }
 
-        .tab-content {
-            display: none;
-            flex-direction: column;
-            gap: 10px;
+        .task-item.completed {
+            border-color: var(--success);
+            opacity: 0.6;
+            text-decoration: line-through;
         }
 
-        .tab-content.active {
-            display: flex;
+        /* Kontrol Butonları */
+        .btn {
+            background-color: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
         }
 
-        /* Matrix Rain / Background FX Layer */
-        #matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.04;
+        .btn:hover {
+            background-color: var(--accent-hover);
         }
 
-        /* UI Wrapper to keep things above matrix */
-        header, .workspace, #alperen-cursor, #alperen-cursor-dot {
-            z-index: 10;
+        /* Scrollbar özelleştirme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
 
-    <canvas id="matrix-bg"></canvas>
-
-    <!-- Custom Cursor Elements -->
-    <div id="alperen-cursor"></div>
-    <div id="alperen-cursor-dot"></div>
-
-    <!-- Header -->
     <header>
-        <div class="logo-area">
-            <span>⚡</span> ALPEREN ULTIMATE OS v9.5
-        </div>
-        <div class="system-status">
-            <div class="status-pill">SİSTEM: <span class="highlight">AKTİF</span></div>
-            <div class="status-pill">ARDUINO DSL: <span class="highlight">BAĞLANDI</span></div>
-            <div class="status-pill">PULSE: <span id="clock-display" class="highlight">00:00:00</span></div>
-        </div>
+        <h1>⚡ Alperen Portal & Dünyası ⚡</h1>
+        <p>Alperen'in kontrol ettiği bu devasa sistemde keşfedilecek 1000+ öğe seni bekliyor!</p>
     </header>
 
-    <!-- Workspace Grid -->
-    <div class="workspace">
-
-        <!-- LEFT COLUMN: CONTROLS, BICYCLE & PLATE SIMULATOR -->
-        <div class="left-col">
-            <div class="panel">
-                <div class="panel-title"><span>🚲 BİSİKLET & AÇIK DÜNYA KONTROLÜ</span></div>
-                <div style="font-size: 12px; line-height: 1.5;">
-                    Alperen'in 26-jant Salcano bisikleti ve açık dünya simülasyonu aktif. Zıplama, nitro boost ve akrobatik sürüş kontrol paneli.
-                </div>
-                <button class="btn btn-primary" onclick="triggerBikeBoost()">⚡ NITRO BOOST AÇ</button>
-                <button class="btn" onclick="spawnWhitePlate()">🍽️ BEYAZ TABAK ÜRET</button>
-                <button class="btn" onclick="toggleWorldMode()">🌍 DÜNYA MODUNU DEĞİŞTİR</button>
-            </div>
-
-            <div class="panel" style="flex: 1;">
-                <div class="panel-title"><span>🛠️ ARDUINO & DONANIM MODLARI</span></div>
-                <div class="tab-buttons">
-                    <div class="tab-btn active" onclick="switchTab(event, 'tab-uno')">Uno R3</div>
-                    <div class="tab-btn" onclick="switchTab(event, 'tab-tft')">1.8" TFT</div>
-                    <div class="tab-btn" onclick="switchTab(event, 'tab-sensor')">HC-SR04</div>
-                </div>
-                <div id="tab-uno" class="tab-content active" style="font-size: 12px; line-height: 1.4;">
-                    <p>Mikrodenetleyici: <span class="highlight">ATmega328P</span></p>
-                    <p>Baud Rate: <span class="highlight">9600 DSL</span></p>
-                    <p>Pin Durumu: <span class="highlight">PWM Aktif</span></p>
-                    <button class="btn" onclick="sendArduinoCommand('RESET')">SİNYAL RESETLE</button>
-                </div>
-                <div id="tab-tft" class="tab-content" style="font-size: 12px; line-height: 1.4;">
-                    <p>Çözünürlük: <span class="highlight">128x160 RGB</span></p>
-                    <p>Yüz İfadesi: <span class="highlight">Mutlu Robot</span></p>
-                    <p>FPS: <span class="highlight">60 FPS Sabit</span></p>
-                    <button class="btn" onclick="sendArduinoCommand('FACE_CHANGE')">İFADE DEĞİŞTİR</button>
-                </div>
-                <div id="tab-sensor" class="tab-content" style="font-size: 12px; line-height: 1.4;">
-                    <p>Mesafe: <span id="sensor-dist" class="highlight">42</span> cm</p>
-                    <p>Ultrasonik Tepki: <span class="highlight">NORMAL</span></p>
-                    <button class="btn" onclick="triggerSensorPulse()">TEST PULSE</button>
-                </div>
-            </div>
+    <div class="dashboard">
+        <!-- 1. Bölüm: Tıklanabilir Alperen Karakteri -->
+        <div class="card alperen-container">
+            <h2>Ana Karakter</h2>
+            <div class="alperen-avatar" id="alperenBtn" title="Alperen'e Tıkla!">😎</div>
+            <p><strong>Alperen</strong> (Sistem Yöneticisi)</p>
+            <div id="alperen-dialogue">"Selam! Üzerime tıklayarak beni konuşturabilir ve puan kazanabilirsin!"</div>
         </div>
 
-        <!-- CENTER COLUMN: GAME & CANVAS ENGINE -->
-        <div class="panel center-col">
-            <div class="canvas-overlay-hud">
-                SKOR: <span id="game-score" class="highlight">0</span> | BEYAZ TABAK: <span id="plate-count" class="highlight">0</span> | MOD: <span class="highlight" id="mode-label">AÇIK DÜNYA</span>
+        <!-- 2. Bölüm: İstatistikler ve Sayaçlar -->
+        <div class="card">
+            <h2>Sistem İstatistikleri</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="clickCount">0</div>
+                    <div class="stat-label">Alperen Tıklama</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="completedTasksCount">0 / 1000</div>
+                    <div class="stat-label">Tamamlanan Görev</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="levelCount">1</div>
+                    <div class="stat-label">Alperen Seviyesi</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="energyCount">100%</div>
+                    <div class="stat-label">Sistem Enerjisi</div>
+                </div>
             </div>
-            <canvas id="gameCanvas"></canvas>
+            <button class="btn" onclick="triggerBoost()">Sistem Boostu Uygula</button>
         </div>
-
-        <!-- BOTTOM COLUMN: ADVANCED TERMINAL -->
-        <div class="panel bottom-col">
-            <div class="panel-title"><span>💻 ALPEREN TERMINAL SHELL v2.4</span></div>
-            <div class="terminal-output" id="terminal-output">
-                <div>[SİSTEM] Alperen Ultimate OS başarıyla yüklendi.</div>
-                <div>[SİSTEM] Tüm donanım modülleri (PC, 6-TEL, Arduino, DSL) senkronize edildi.</div>
-                <div>[İPUCU] Komut satırına 'yardim' yazarak tüm komutları görebilirsiniz.</div>
-            </div>
-            <div class="terminal-input-line">
-                <span style="color: var(--secondary);">&gt;</span>
-                <input type="text" id="terminal-input" class="terminal-input" placeholder="Komut yazın (örn: yardim, status, boost, clear)..." autofocus>
-            </div>
-        </div>
-
-        <!-- RIGHT COLUMN: TELEMETRY & SYSTEM MONITOR -->
-        <div class="right-col">
-            <div class="panel">
-                <div class="panel-title"><span>📊 SİSTEM TELEMETRİSİ</span></div>
-                <div class="telemetry-row">
-                    <span>CPU Yükü:</span>
-                    <span class="highlight" id="cpu-load">14.2%</span>
-                </div>
-                <div class="telemetry-row">
-                    <span>Bellek Kullanımı:</span>
-                    <span class="highlight">4.8 GB / 16 GB</span>
-                </div>
-                <div class="telemetry-row">
-                    <span>GPU FPS Sınırı:</span>
-                    <span class="highlight">77 FPS (NVIDIA)</span>
-                </div>
-                <div class="telemetry-row">
-                    <span>Ağ Bağlantısı:</span>
-                    <span class="highlight">1 Gbps DSL</span>
-                </div>
-                <div class="telemetry-row">
-                    <span>Çalışma Süresi:</span>
-                    <span id="uptime-display" class="highlight">00:00:00</span>
-                </div>
-            </div>
-
-            <div class="panel" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                <div class="panel-title"><span>🚀 HIZLI İŞLEMLER</span></div>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <button class="btn" onclick="runMatrixEffect()">MATRIX YAĞMURU</button>
-                    <button class="btn" onclick="playCyberSound()">SES SENTEZLE</button>
-                    <button class="btn" onclick="resetAllSystems()">FABRİKA AYARLARI</button>
-                </div>
-                <div style="font-size: 10px; color: rgba(0,255,204,0.5); text-align: center; margin-top: 10px;">
-                    Alperen Özel Projesi © 2026
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- JAVASCRIPT CODE ENGINE -->
+    <!-- 3. Bölüm: 1000'den Fazla Yapılacak Şey / Görev Matrisi -->
+    <div class="tasks-section">
+        <div class="tasks-header">
+            <h2>Alperen'in 1000+ Yapılacaklar & Aktivite Listesi</h2>
+            <button class="btn" onclick="completeAllVisible()">Tümünü İşaretle</button>
+        </div>
+        <p style="color: var(--text-muted); margin-bottom: 15px; font-size: 0.9rem;">
+            Aşağıda Alperen evreni için oluşturulmuş 1000 farklı görev/aktivite listelenmiştir. Üzerine tıklayarak tamamlayabilirsin!
+        </p>
+        <div class="tasks-container" id="tasksContainer">
+            <!-- JavaScript ile otomatik 1000 görev buraya yüklenecek -->
+        </div>
+    </div>
+
     <script>
-        /* ==========================================================================
-           ALPEREN OS JAVASCRIPT ENGINE & LOGIC
-           ========================================================================== */
+        // Durum Değişkenleri
+        let clicks = 0;
+        let completedTasks = 0;
+        let level = 1;
 
-        // --- CUSTOM CURSOR LOGIC ---
-        const cursor = document.getElementById('alperen-cursor');
-        const cursorDot = document.getElementById('alperen-cursor-dot');
+        // Alperen'in tıklandığında söyleyeceği rastgele sözler
+        const dialogues = [
+            "Kodlar kusursuz çalışıyor!",
+            "Beni yine rahatsız ettin ama helal olsun puanı kaptın!",
+            "GitHub Pages üzerinde harika görünüyorum değil mi?",
+            "1000 görevi bitirebilecek misin bakalım?",
+            "Alperen gücü adına!",
+            "Sistem stabil, devam et!",
+            "Biraz mola verip bisiklet turuna mı çıksak?",
+            "3D modelleme veya oyun geliştirme zamanı!"
+        ];
 
-        let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-        let cursorX = mouseX;
-        let cursorY = mouseY;
+        const alperenBtn = document.getElementById('alperenBtn');
+        const clickCountEl = document.getElementById('clickCount');
+        const dialogueEl = document.getElementById('alperen-dialogue');
+        const completedTasksCountEl = document.getElementById('completedTasksCount');
+        const levelCountEl = document.getElementById('levelCount');
+        const tasksContainer = document.getElementById('tasksContainer');
 
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursorDot.style.left = mouseX + 'px';
-            cursorDot.style.top = mouseY + 'px';
+        // Alperen karakterine tıklama olayı
+        alperenBtn.addEventListener('click', () => {
+            clicks++;
+            clickCountEl.textContent = clicks;
 
-            // Generate cursor particle trail
-            if (Math.random() < 0.25) {
-                const trail = document.createElement('div');
-                trail.className = 'cursor-trail';
-                trail.style.left = mouseX + 'px';
-                trail.style.top = mouseY + 'px';
-                document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 600);
+            // Rastgele diyalog seç
+            const randomMsg = dialogues[Math.floor(Math.random() * dialogues.length)];
+            dialogueEl.textContent = `"${randomMsg}"`;
+
+            // Her 25 tıklamada bir seviye atlat
+            if (clicks % 25 === 0) {
+                level++;
+                levelCountEl.textContent = level;
             }
         });
 
-        function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.25;
-            cursorY += (mouseY - cursorY) * 0.25;
-            cursor.style.left = cursorX + 'px';
-            cursor.style.top = cursorY + 'px';
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
+        // 1000+ Görevi Dinamik Olarak Oluşturma
+        const totalTasks = 1000;
+        const taskList = [];
 
-        window.addEventListener('mousedown', () => {
-            cursor.style.width = '40px';
-            cursor.style.height = '40px';
-            cursor.style.backgroundColor = 'rgba(0, 255, 204, 0.15)';
-        });
-        window.addEventListener('mouseup', () => {
-            cursor.style.width = '28px';
-            cursor.style.height = '28px';
-            cursor.style.backgroundColor = 'transparent';
-        });
-
-        // --- CLOCK & UPTIME ---
-        let startTime = Date.now();
-        function updateClocks() {
-            const now = new Date();
-            const timeString = now.toTimeString().split(' ')[0];
-            document.getElementById('clock-display').innerText = timeString;
-
-            const elapsed = Math.floor((Date.now() - startTime) / 1000);
-            const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-            const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
-            const secs = String(elapsed % 60).padStart(2, '0');
-            document.getElementById('uptime-display').innerText = `${hrs}:${mins}:${secs}`;
-
-            // Randomize CPU load slightly for realism
-            const randomCpu = (12 + Math.random() * 8).toFixed(1);
-            document.getElementById('cpu-load').innerText = `${randomCpu}%`;
-        }
-        setInterval(updateClocks, 1000);
-
-        // --- TAB SYSTEM ---
-        function switchTab(evt, tabId) {
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(c => c.classList.remove('active'));
-
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(b => b.classList.remove('active'));
-
-            document.getElementById(tabId).classList.add('active');
-            evt.currentTarget.classList.add('active');
-            printToTerminal(`[SİSTEM] Sekme değiştirildi: ${tabId}`);
-        }
-
-        // --- TERMINAL EMULATOR ---
-        const terminalOutput = document.getElementById('terminal-output');
-        const terminalInput = document.getElementById('terminal-input');
-
-        function printToTerminal(text, isError = false) {
-            const div = document.createElement('div');
-            div.style.color = isError ? '#ff007f' : 'var(--primary)';
-            div.innerText = text;
-            terminalOutput.appendChild(div);
-            terminalOutput.scrollTop = terminalOutput.scrollHeight;
-        }
-
-        terminalInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const cmd = terminalInput.value.trim();
-                if (cmd === '') return;
-                printToTerminal(`> ${cmd}`);
-                handleCommand(cmd.toLowerCase());
-                terminalInput.value = '';
-            }
-        });
-
-        function handleCommand(cmd) {
-            switch(cmd) {
-                case 'yardim':
-                case 'help':
-                    printToTerminal('Mevcut Komutlar:');
-                    printToTerminal(' - status  : Sistem durumunu gösterir');
-                    printToTerminal(' - boost   : Bisiklet hızını artırır');
-                    printToTerminal(' - tabak   : Beyaz tabak üretir');
-                    printToTerminal(' - arduino : Arduino DSL bağlantısını test eder');
-                    printToTerminal(' - matrix  : Matrix görsel efektini tetikler');
-                    printToTerminal(' - clear   : Terminal ekranını temizler');
-                    printToTerminal(' - hakkinda: Alperen Ultimate OS hakkında bilgi verir');
-                    break;
-                case 'status':
-                    printToTerminal('[DURUM] Tüm sistemler kararlı. 6-TEL & PC & Arduino senkronize.');
-                    break;
-                case 'boost':
-                    triggerBikeBoost();
-                    printToTerminal('[BİSİKLET] Nitro Boost aktif edildi!');
-                    break;
-                case 'tabak':
-                    spawnWhitePlate();
-                    printToTerminal('[ENVANTER] Beyaz tabak koleksiyona eklendi.');
-                    break;
-                case 'arduino':
-                    printToTerminal('[ARDUINO] ATmega328P seri port yanıt verdi: OK (9600 baud)');
-                    break;
-                case 'matrix':
-                    runMatrixEffect();
-                    printToTerminal('[GÖRSEL] Matrix yağmuru güçlendirildi.');
-                    break;
-                case 'clear':
-                    terminalOutput.innerHTML = '';
-                    break;
-                case 'hakkinda':
-                case 'about':
-                    printToTerminal('Alperen Ultimate OS: Bisiklet sürüşü, açık dünya, Arduino donanım ve havalı mouse entegrasyonlu özel platform.');
-                    break;
-                default:
-                    printToTerminal(`Bilinmeyen komut: '${cmd}'. 'yardim' yazarak komut listesini görebilirsiniz.`, true);
-                    break;
-            }
-        }
-
-        // --- GAME & CANVAS ENGINE (BIKE & OPEN WORLD SIMULATOR) ---
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            const container = canvas.parentElement;
-            canvas.width = container.clientWidth;
-            canvas.height = container.clientHeight - 40; // HUD payı
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        let score = 0;
-        let plateCount = 0;
-        let speedMultiplier = 1;
-        let worldMode = 'AÇIK DÜNYA';
-
-        let bike = {
-            x: 100,
-            y: canvas.height / 2,
-            radius: 18,
-            speed: 4
-        };
-
-        let entities = [];
-
-        function spawnEntity() {
-            entities.push({
-                x: canvas.width + 50,
-                y: Math.random() * (canvas.height - 60) + 30,
-                type: Math.random() > 0.4 ? 'plate' : 'arduino_part',
-                size: 14
+        for (let i = 1; i <= totalTasks; i++) {
+            taskList.push({
+                id: i,
+                text: `Alperen Görevi #${i}: Sistemi Optimize Et`,
+                completed: false
             });
         }
-        setInterval(spawnEntity, 1800);
 
-        let keys = {};
-        window.addEventListener('keydown', (e) => keys[e.key] = true);
-        window.addEventListener('keyup', (e) => keys[e.key] = false);
-
-        function triggerBikeBoost() {
-            speedMultiplier = 2.8;
-            printToTerminal('[BİSİKLET] Nitro Boost ateşlendi!');
-            setTimeout(() => speedMultiplier = 1, 3000);
-        }
-
-        function spawnWhitePlate() {
-            plateCount++;
-            document.getElementById('plate-count').innerText = plateCount;
-            printToTerminal('[NESNE] Beyaz tabak üretildi ve masaya yerleştirildi.');
-        }
-
-        function toggleWorldMode() {
-            worldMode = worldMode === 'AÇIK DÜNYA' ? 'SERBEST SÜRÜŞ' : 'AÇIK DÜNYA';
-            document.getElementById('mode-label').innerText = worldMode;
-            printToTerminal(`[DÜNYA] Mod değiştirildi: ${worldMode}`);
-        }
-
-        function triggerSensorPulse() {
-            const dist = Math.floor(10 + Math.random() * 80);
-            document.getElementById('sensor-dist').innerText = dist;
-            printToTerminal(`[ARDUINO] HC-SR04 Mesafe ölçümü: ${dist} cm`);
-        }
-
-        function runMatrixEffect() {
-            printToTerminal('[SİSTEM] Matrix protokolü tetiklendi.');
-        }
-
-        function playCyberSound() {
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.2);
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.2);
-                printToTerminal('[SES] Web Audio sentezleyici tetiklendi.');
-            } catch(e) {
-                printToTerminal('[SES] Ses bağlamı başlatılamadı.', true);
-            }
-        }
-
-        function resetAllSystems() {
-            score = 0;
-            plateCount = 0;
-            entities = [];
-            document.getElementById('game-score').innerText = score;
-            document.getElementById('plate-count').innerText = plateCount;
-            printToTerminal('[SİSTEM] Fabrika ayarlarına dönüldü.');
-        }
-
-        // Main Update Loop
-        function updateGame() {
-            if (canvas.width <= 0 || canvas.height <= 0) return;
-
-            // Handle Bike Movement
-            if ((keys['ArrowUp'] || keys['w'] || keys['W']) && bike.y > 25) bike.y -= bike.speed * speedMultiplier;
-            if ((keys['ArrowDown'] || keys['s'] || keys['S']) && bike.y < canvas.height - 25) bike.y += bike.speed * speedMultiplier;
-            if ((keys['ArrowLeft'] || keys['a'] || keys['A']) && bike.x > 30) bike.x -= bike.speed;
-            if ((keys['ArrowRight'] || keys['d'] || keys['D']) && bike.x < canvas.width / 2) bike.x += bike.speed;
-
-            // Update Entities
-            for (let i = entities.length - 1; i >= 0; i--) {
-                entities[i].x -= 3.5 * speedMultiplier;
-
-                // Collision Detection
-                let dx = bike.x - entities[i].x;
-                let dy = bike.y - entities[i].y;
-                let dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < bike.radius + entities[i].size) {
-                    if (entities[i].type === 'plate') {
-                        plateCount++;
-                        document.getElementById('plate-count').innerText = plateCount;
+        function renderTasks() {
+            tasksContainer.innerHTML = '';
+            taskList.forEach((task, index) => {
+                const item = document.createElement('div');
+                item.className = `task-item ${task.completed ? 'completed' : ''}`;
+                item.innerHTML = `<span>${task.text}</span> <span>${task.completed ? '✅' : '⏳'}</span>`;
+                
+                item.addEventListener('click', () => {
+                    taskList[index].completed = !taskList[index].completed;
+                    if (taskList[index].completed) {
+                        completedTasks++;
                     } else {
-                        score += 50;
-                        document.getElementById('game-score').innerText = score;
+                        completedTasks--;
                     }
-                    entities.splice(i, 1);
-                } else if (entities[i].x < -50) {
-                    entities.splice(i, 1);
-                }
-            }
-        }
+                    completedTasksCountEl.textContent = `${completedTasks} / ${totalTasks}`;
+                    renderTasks();
+                });
 
-        // Main Render Loop
-        function drawGame() {
-            if (canvas.width <= 0 || canvas.height <= 0) return;
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Draw Cyber Grid Background
-            ctx.strokeStyle = 'rgba(0, 255, 204, 0.04)';
-            ctx.lineWidth = 1;
-            for (let x = 0; x < canvas.width; x += 35) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, canvas.height);
-                ctx.stroke();
-            }
-            for (let y = 0; y < canvas.height; y += 35) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(canvas.width, y);
-                ctx.stroke();
-            }
-
-            // Draw Entities (Plates & Arduino items)
-            entities.forEach(ent => {
-                ctx.save();
-                ctx.translate(ent.x, ent.y);
-                if (ent.type === 'plate') {
-                    // Glowing White Plate
-                    ctx.fillStyle = '#ffffff';
-                    ctx.shadowBlur = 15;
-                    ctx.shadowColor = '#ffffff';
-                    ctx.beginPath();
-                    ctx.arc(0, 0, ent.size, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.strokeStyle = '#cccccc';
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
-                } else {
-                    // Arduino Chip / Part
-                    ctx.fillStyle = '#ff007f';
-                    ctx.shadowBlur = 12;
-                    ctx.shadowColor = '#ff007f';
-                    ctx.fillRect(-ent.size, -ent.size / 2, ent.size * 2, ent.size);
-                }
-                ctx.restore();
+                tasksContainer.appendChild(item);
             });
-
-            // Draw Bike / Character
-            ctx.save();
-            ctx.translate(bike.x, bike.y);
-            ctx.fillStyle = '#00ffcc';
-            ctx.shadowBlur = 20;
-            ctx.shadowColor = '#00ffcc';
-
-            // Wheels
-            ctx.beginPath();
-            ctx.arc(-10, 8, 8, 0, Math.PI * 2);
-            ctx.arc(10, 8, 8, 0, Math.PI * 2);
-            ctx.fillStyle = '#ff007f';
-            ctx.fill();
-
-            // Frame
-            ctx.strokeStyle = '#00ffcc';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.moveTo(-10, 8);
-            ctx.lineTo(0, -6);
-            ctx.lineTo(10, 8);
-            ctx.moveTo(0, -6);
-            ctx.lineTo(0, -14);
-            ctx.stroke();
-
-            ctx.restore();
         }
 
-        function gameLoop() {
-            updateGame();
-            drawGame();
-            requestAnimationFrame(gameLoop);
-        }
-        gameLoop();
-
-        // --- MATRIX RAIN BACKGROUND ---
-        const matrixCanvas = document.getElementById('matrix-bg');
-        const matrixCtx = matrixCanvas.getContext('2d');
-
-        function resizeMatrix() {
-            matrixCanvas.width = window.innerWidth;
-            matrixCanvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeMatrix);
-        resizeMatrix();
-
-        const chars = 'ALPEREN010101ARDUINOOSBCDEFGHIJKLMNOPQRSTUVWXYZ';
-        const fontSize = 14;
-        let columns = Math.floor(matrixCanvas.width / fontSize);
-        let drops = [];
-        for (let i = 0; i < columns; i++) {
-            drops[i] = 1;
+        function triggerBoost() {
+            alert("🚀 Alperen Turbo Modu Aktif! Sistem hızı katlandı.");
         }
 
-        function drawMatrix() {
-            matrixCtx.fillStyle = 'rgba(3, 3, 8, 0.08)';
-            matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-
-            matrixCtx.fillStyle = '#00ffcc';
-            matrixCtx.font = fontSize + 'px monospace';
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars.charAt(Math.floor(Math.random() * chars.length));
-                matrixCtx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
+        function completeAllVisible() {
+            taskList.forEach(task => task.completed = true);
+            completedTasks = totalTasks;
+            completedTasksCountEl.textContent = `${completedTasks} / ${totalTasks}`;
+            renderTasks();
         }
-        setInterval(drawMatrix, 50);
 
-        // Initialization log
-        printToTerminal('[SİSTEM] Tüm bileşenler başarıyla başlatıldı. Sürüşe hazır.');
+        // Sayfa açıldığında görevleri yükle
+        renderTasks();
     </script>
 </body>
 </html>
